@@ -61,7 +61,6 @@ public class Player : MonoBehaviour
     private IEnumerator FireCoroutine()
     {
         Fire();
-        Debug.Log("Firing the weapon");
         yield return new WaitForSeconds(fireRate);
         isFireCoroutine = false;
     }
@@ -89,13 +88,14 @@ public class Player : MonoBehaviour
 
     private void Fire()
     {
-    
         RaycastHit hitInfo;
+        Debug.DrawRay(firePoint.position, playerCamera.forward * fireDistance,Color.red, 10.0f);
         if(Physics.Raycast(firePoint.position, playerCamera.forward, out hitInfo, fireDistance))
         {
             if (hitInfo.collider.GetComponent<OnHealth>())
             {
-                hitInfo.collider.GetComponent<OnHealth>().OnTakeDamage(-1);
+                Debug.Log("Has a health component");
+                hitInfo.collider.GetComponent<OnHealth>().OnTakeDamage(1);
             }
         }
     }

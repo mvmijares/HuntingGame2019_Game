@@ -19,15 +19,16 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float verticalLookSpeed;
     private Quaternion verticalFromRotation;
     private Quaternion verticalToRotation;
-
+    public Ray lookDirection;
     private void Awake()
     {
         Cursor.lockState = CursorLockMode.Locked;
-        
+        lookDirection = new Ray();
     }
 
     private void Update()
     {
+     
         float horizontal = Input.GetAxis("Mouse X");
         float vertical = Input.GetAxis("Mouse Y");
         verticalInput += vertical;
@@ -41,5 +42,9 @@ public class CameraController : MonoBehaviour
         currentPosition = transform.localPosition;
 
         transform.localPosition = new Vector3(currentPosition.x, currentPosition.y, distanceFromTarget);
+
+
+        lookDirection = new Ray(transform.position, transform.forward); // TODO: Create a better method of creating camera look direction
+
     }
 }

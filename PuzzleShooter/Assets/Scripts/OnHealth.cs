@@ -5,19 +5,20 @@ using UnityEngine;
 public class OnHealth : MonoBehaviour
 {
     [Tooltip("Health prior to game start.")]
-    public int initHealth;
+    public int baseHealth;
     [SerializeField] private int _health;
 
+    [HideInInspector]
     public int health { get { return _health; } }
+
     private void Awake()
     {
-    
+        _health = baseHealth;
     }
     public void OnTakeDamage(int value)
     {
         _health -= value;
     }
-
     public void OnHealUnity(int value)
     {
         _health += value;

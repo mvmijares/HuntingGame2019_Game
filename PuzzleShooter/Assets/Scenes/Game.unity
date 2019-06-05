@@ -310,6 +310,18 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 3425494074378479984}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &522619128 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3425494074531930504, guid: 0c4ae66fcf16f15429845a662cac2396,
+    type: 3}
+  m_PrefabInstance: {fileID: 3425494074378479984}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 522619127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58574a5dd88c3ea47ba59f0610d65907, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &522619129
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -391,6 +403,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40d72af55e7e9e74ca99c77214ee34ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &1072533301 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3425494074838645959, guid: 0c4ae66fcf16f15429845a662cac2396,
+    type: 3}
+  m_PrefabInstance: {fileID: 3425494074378479984}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1093885822
 GameObject:
   m_ObjectHideFlags: 0
@@ -482,7 +500,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 604465784}
     m_Modifications:
     - target: {fileID: 100000, guid: 584761fab006d6d42b4d0d8c56a51241, type: 3}
       propertyPath: m_Name
@@ -494,35 +512,35 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 584761fab006d6d42b4d0d8c56a51241, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.84503317
+      value: 0.1047923
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 584761fab006d6d42b4d0d8c56a51241, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.4186265
+      value: -0.027000042
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 584761fab006d6d42b4d0d8c56a51241, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.063035674
+      value: -0.007999994
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 584761fab006d6d42b4d0d8c56a51241, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.4999999
+      value: 0.49996483
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 584761fab006d6d42b4d0d8c56a51241, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.49999997
+      value: 0.5000351
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 584761fab006d6d42b4d0d8c56a51241, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.5000001
+      value: 0.49996504
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 584761fab006d6d42b4d0d8c56a51241, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.49999997
+      value: 0.5000351
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 584761fab006d6d42b4d0d8c56a51241, type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 584761fab006d6d42b4d0d8c56a51241, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -805,12 +823,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
---- !u!4 &1851417983 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3425494074838646041, guid: 0c4ae66fcf16f15429845a662cac2396,
-    type: 3}
-  m_PrefabInstance: {fileID: 3425494074378479984}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1858997273
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -908,13 +920,17 @@ MonoBehaviour:
   bodyWeight: 0.8
   headWeight: 1
   clampWeight: 1
-  rightShoulder: {fileID: 1851417983}
-  rightHandIKTarget: {fileID: 604465784}
-  rightHandIKWeight: 0
-  leftHandIKTarget: {fileID: 0}
-  leftHandIKWeight: 0
+  weapon: {fileID: 1667658739}
   lookAtTarget: {fileID: 0}
   distanceFromCamera: 20
+  rightHandTransform: {fileID: 604465784}
+  rightHandIKTarget: {fileID: 0}
+  rightHandIKWeight: 0
+  rightElbowTransform: {fileID: 1072533301}
+  rightElbowIKTarget: {fileID: 0}
+  rightElbowIKWeight: 0
+  bodyIKTarget: {fileID: 0}
+  bodyIKWeight: 0
   calculatedAngle: 0
   weightSpeed: 1
 --- !u!1001 &3425494074378479984
@@ -928,6 +944,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 3425494074531930504, guid: 0c4ae66fcf16f15429845a662cac2396,
+        type: 3}
+      propertyPath: materials.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3425494074531930504, guid: 0c4ae66fcf16f15429845a662cac2396,
+        type: 3}
+      propertyPath: firePoint
+      value: 
+      objectReference: {fileID: 1660305216}
+    - target: {fileID: 3425494074531930504, guid: 0c4ae66fcf16f15429845a662cac2396,
+        type: 3}
+      propertyPath: fireRate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3425494074531930504, guid: 0c4ae66fcf16f15429845a662cac2396,
+        type: 3}
+      propertyPath: fireDistance
+      value: 1000
       objectReference: {fileID: 0}
     - target: {fileID: 3425494074531930507, guid: 0c4ae66fcf16f15429845a662cac2396,
         type: 3}
@@ -984,6 +1020,36 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 951664406263607604, guid: 0c4ae66fcf16f15429845a662cac2396,
+        type: 3}
+      propertyPath: lookAtTarget
+      value: 
+      objectReference: {fileID: 522619131}
+    - target: {fileID: 951664406263607604, guid: 0c4ae66fcf16f15429845a662cac2396,
+        type: 3}
+      propertyPath: distanceFromTarget
+      value: -3
+      objectReference: {fileID: 0}
+    - target: {fileID: 951664406263607604, guid: 0c4ae66fcf16f15429845a662cac2396,
+        type: 3}
+      propertyPath: verticalLookClamp.x
+      value: -30
+      objectReference: {fileID: 0}
+    - target: {fileID: 951664406263607604, guid: 0c4ae66fcf16f15429845a662cac2396,
+        type: 3}
+      propertyPath: verticalLookClamp.y
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 951664406263607604, guid: 0c4ae66fcf16f15429845a662cac2396,
+        type: 3}
+      propertyPath: verticalLookSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 951664406263607604, guid: 0c4ae66fcf16f15429845a662cac2396,
+        type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 522619128}
     - target: {fileID: 2715849057655391802, guid: 0c4ae66fcf16f15429845a662cac2396,
         type: 3}
       propertyPath: m_LocalPosition.y
@@ -997,7 +1063,7 @@ PrefabInstance:
     - target: {fileID: 2715849057655391802, guid: 0c4ae66fcf16f15429845a662cac2396,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2715849057655391802, guid: 0c4ae66fcf16f15429845a662cac2396,
         type: 3}
@@ -1064,31 +1130,6 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[1]
       value: 
       objectReference: {fileID: 2100000, guid: 042ffd7ea0e7237448b5006af83ea598, type: 2}
-    - target: {fileID: 951664406263607604, guid: 0c4ae66fcf16f15429845a662cac2396,
-        type: 3}
-      propertyPath: lookAtTarget
-      value: 
-      objectReference: {fileID: 522619131}
-    - target: {fileID: 951664406263607604, guid: 0c4ae66fcf16f15429845a662cac2396,
-        type: 3}
-      propertyPath: distanceFromTarget
-      value: -5
-      objectReference: {fileID: 0}
-    - target: {fileID: 951664406263607604, guid: 0c4ae66fcf16f15429845a662cac2396,
-        type: 3}
-      propertyPath: verticalLookClamp.x
-      value: -30
-      objectReference: {fileID: 0}
-    - target: {fileID: 951664406263607604, guid: 0c4ae66fcf16f15429845a662cac2396,
-        type: 3}
-      propertyPath: verticalLookClamp.y
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 951664406263607604, guid: 0c4ae66fcf16f15429845a662cac2396,
-        type: 3}
-      propertyPath: verticalLookSpeed
-      value: 5
-      objectReference: {fileID: 0}
     - target: {fileID: 3425494074824682941, guid: 0c4ae66fcf16f15429845a662cac2396,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -1099,30 +1140,27 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[1]
       value: 
       objectReference: {fileID: 2100000, guid: 73d0cca8d3c7d1e44af2336b68c49f41, type: 2}
-    - target: {fileID: 3425494074531930504, guid: 0c4ae66fcf16f15429845a662cac2396,
-        type: 3}
-      propertyPath: materials.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 3425494074531930504, guid: 0c4ae66fcf16f15429845a662cac2396,
-        type: 3}
-      propertyPath: firePoint
-      value: 
-      objectReference: {fileID: 1660305216}
-    - target: {fileID: 3425494074531930504, guid: 0c4ae66fcf16f15429845a662cac2396,
-        type: 3}
-      propertyPath: fireRate
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3425494074531930504, guid: 0c4ae66fcf16f15429845a662cac2396,
-        type: 3}
-      propertyPath: fireDistance
-      value: 1000
-      objectReference: {fileID: 0}
     - target: {fileID: 3425494074838343871, guid: 0c4ae66fcf16f15429845a662cac2396,
         type: 3}
       propertyPath: m_Name
       value: Mesh Renderer
+      objectReference: {fileID: 0}
+    - target: {fileID: 3425494074828821375, guid: 0c4ae66fcf16f15429845a662cac2396,
+        type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3425494074828821375, guid: 0c4ae66fcf16f15429845a662cac2396,
+        type: 3}
+      propertyPath: m_WarningMessage
+      value: "\nBinding warning: Some generic clip(s) animate transforms that are
+        already bound by a Humanoid avatar. These transforms can only be changed by
+        Humanoid clips.\n\tTransform 'swat:Hips'\n\tTransform 'swat:LeftToeBase'\n\tTransform
+        'swat:LeftShoulder'\n\tTransform 'swat:Head'\n\tTransform 'swat:LeftLeg'\n\tTransform
+        'swat:RightShoulder'\n\tTransform 'swat:RightHandRing2'\n\tTransform 'swat:Neck1'\n\tTransform
+        'swat:Hips'\n\tTransform 'swat:Spine'\n\tand more ...\n\tFrom animation clip
+        'Run Backward'\n\tFrom animation clip 'Swat_Idle'\n\tFrom animation clip 'Swat_Run'\n\tFrom
+        animation clip 'Idle_Aim'"
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0c4ae66fcf16f15429845a662cac2396, type: 3}

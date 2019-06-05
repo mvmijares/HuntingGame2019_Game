@@ -7,6 +7,8 @@ public class Player : MonoBehaviour
     private Animator anim;
 
     Transform playerCamera;
+    private bool _aim;
+    public bool aim { get { return _aim; } }
     private float horizontalInput;
     [SerializeField] private float moveSpeed;
     [SerializeField] private float turnSpeed;
@@ -34,9 +36,9 @@ public class Player : MonoBehaviour
 
         ApplyInput(horizontal, vertical);
 
-        bool aiming = Input.GetMouseButton(1);
+        _aim = Input.GetMouseButton(1);
         
-        anim.SetBool("Aim", aiming);
+        anim.SetBool("Aim", _aim);
 
         fire = Input.GetMouseButton(0);
 

@@ -13,7 +13,8 @@ public class Player : MonoBehaviour
     public CameraController cameraController { get { return _cameraController; } }
     AimIKHelper _aimIKHelper;
     public AimIKHelper aimIKHelper { get { return _aimIKHelper; } }
-
+    WeaponAim _weaponAim;
+    public WeaponAim weaponAim { get { return _weaponAim;  } } 
     public float moveSpeed;
     public float turnSpeed;
 
@@ -45,6 +46,8 @@ public class Player : MonoBehaviour
         _cameraController.Initialize(this);
         _aimIKHelper = GetComponentInChildren<AimIKHelper>(); // assuming we only have one instance in player object
         _aimIKHelper.Initialize(this);
+        _weaponAim = GetComponent<WeaponAim>();
+        _weaponAim.Initialize(this);
     }
 
     private void Update()

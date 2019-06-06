@@ -5,7 +5,8 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
 
-    [SerializeField] Player player;
+    [SerializeField] Player _player;
+    
     Camera component;
     [Tooltip("Camera focal point")]
     public Transform lookAtTarget;
@@ -25,6 +26,15 @@ public class CameraController : MonoBehaviour
     private Quaternion verticalToRotation;
     public Ray lookDirection;
 
+    //Initialization called by Player
+    public void Initialize(Player player)
+    {
+        if (player)
+        {
+            _player = player;
+
+        }
+    }
     private void Awake()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -32,19 +42,16 @@ public class CameraController : MonoBehaviour
         lookDirection = new Ray();
     }
 
-    private void Update()
+    private void LateUpdate()
     {
-     
-        float horizontal = Input.GetAxis("Mouse X");
-        float vertical = Input.GetAxis("Mouse Y");
-        verticalInput += vertical;
+        verticalInput += _player.playerInput.mouseY;
         verticalInput = Mathf.Clamp(verticalInput, verticalLookClamp.x, verticalLookClamp.y);
         verticalToRotation = Quaternion.Euler(-verticalInput,-5, 0);
         verticalFromRotation = transform.localRotation;
         transform.localRotation = Quaternion.Slerp(verticalFromRotation, verticalToRotation, Time.deltaTime * verticalLookSpeed);
 
-        if (player)
-            component.fieldOfView = (player.aim) ? aimFOV : normalFOV;
+        if (_player)
+            component.fieldOfView = (_player.aim) ? aimFOV : normalFOV;
         
        
         currentPosition = transform.localPosition;

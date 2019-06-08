@@ -707,6 +707,46 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player Camera
       objectReference: {fileID: 0}
+    - target: {fileID: 1121819788203173016, guid: c693ca4a2151c0e48a7f7eba40aded83,
+        type: 3}
+      propertyPath: lookAtTarget
+      value: 
+      objectReference: {fileID: 522619131}
+    - target: {fileID: 1121819788203173016, guid: c693ca4a2151c0e48a7f7eba40aded83,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1121819788203173016, guid: c693ca4a2151c0e48a7f7eba40aded83,
+        type: 3}
+      propertyPath: distanceFromTarget
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1121819788203173016, guid: c693ca4a2151c0e48a7f7eba40aded83,
+        type: 3}
+      propertyPath: heightPosition
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1121819788203173016, guid: c693ca4a2151c0e48a7f7eba40aded83,
+        type: 3}
+      propertyPath: yLookSpeed
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1121819788203173016, guid: c693ca4a2151c0e48a7f7eba40aded83,
+        type: 3}
+      propertyPath: xLookSpeed
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1121819788203173016, guid: c693ca4a2151c0e48a7f7eba40aded83,
+        type: 3}
+      propertyPath: cameraLookSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1121819788203173016, guid: c693ca4a2151c0e48a7f7eba40aded83,
+        type: 3}
+      propertyPath: debugMode
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2816402123439346582, guid: c693ca4a2151c0e48a7f7eba40aded83,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -762,26 +802,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1121819788203173016, guid: c693ca4a2151c0e48a7f7eba40aded83,
-        type: 3}
-      propertyPath: lookAtTarget
-      value: 
-      objectReference: {fileID: 522619131}
-    - target: {fileID: 1121819788203173016, guid: c693ca4a2151c0e48a7f7eba40aded83,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1121819788203173016, guid: c693ca4a2151c0e48a7f7eba40aded83,
-        type: 3}
-      propertyPath: distanceFromTarget
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1121819788203173016, guid: c693ca4a2151c0e48a7f7eba40aded83,
-        type: 3}
-      propertyPath: heightPosition
-      value: 2
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c693ca4a2151c0e48a7f7eba40aded83, type: 3}
 --- !u!1001 &4106110176166376763
@@ -795,21 +815,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 3425494074531930504, guid: 0c4ae66fcf16f15429845a662cac2396,
-        type: 3}
-      propertyPath: cameraController
-      value: 
-      objectReference: {fileID: 2503210888705693764}
-    - target: {fileID: 3425494074531930504, guid: 0c4ae66fcf16f15429845a662cac2396,
-        type: 3}
-      propertyPath: moveSpeed
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 3425494074531930504, guid: 0c4ae66fcf16f15429845a662cac2396,
-        type: 3}
-      propertyPath: turnSpeed
-      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 3425494074531930507, guid: 0c4ae66fcf16f15429845a662cac2396,
         type: 3}
@@ -865,6 +870,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3425494074531930504, guid: 0c4ae66fcf16f15429845a662cac2396,
+        type: 3}
+      propertyPath: cameraController
+      value: 
+      objectReference: {fileID: 2503210888705693764}
+    - target: {fileID: 3425494074531930504, guid: 0c4ae66fcf16f15429845a662cac2396,
+        type: 3}
+      propertyPath: moveSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3425494074531930504, guid: 0c4ae66fcf16f15429845a662cac2396,
+        type: 3}
+      propertyPath: turnSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4106110176051627537, guid: 0c4ae66fcf16f15429845a662cac2396,
+        type: 3}
+      propertyPath: disableIK
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0c4ae66fcf16f15429845a662cac2396, type: 3}

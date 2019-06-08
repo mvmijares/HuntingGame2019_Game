@@ -14,7 +14,6 @@ public class PlayerMovement : MonoBehaviour
     private float cameraInputH; // caching horizontalInput
     private Quaternion quaternionFromRotation;
     private Quaternion quaternionToRotation;
-
     #endregion
     public void Initialize(Player player)
     {

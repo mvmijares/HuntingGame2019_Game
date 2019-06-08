@@ -9,6 +9,7 @@ public class AimIKHelper : MonoBehaviour
     [SerializeField] private AimIK aimIK;
     [SerializeField] private Transform _target;
     [SerializeField] private float positionWeightIK;
+    public bool disableIK;
     public float weightSpeed;
     public void Initialize(Player player)
     {
@@ -22,6 +23,7 @@ public class AimIKHelper : MonoBehaviour
     private void LateUpdate()
     {
         if (!aimIK) return;
+        if (!disableIK) return;
 
         if(_target != null)
         {

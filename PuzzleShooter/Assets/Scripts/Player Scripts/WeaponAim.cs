@@ -18,7 +18,7 @@ public class WeaponAim : MonoBehaviour
         if (player)
         {
             _player = player;
-            _target = new GameObject("Aiming Focal Point").transform;
+            //_target = new GameObject("Aiming Focal Point").transform;
 
         }
     }
@@ -26,9 +26,7 @@ public class WeaponAim : MonoBehaviour
     {
         if (_player)
         {
-            Vector3 point = _player.cameraController.lookDirection.GetPoint(distanceFromPlayer);
 
-            _target.position = point;
             SetTarget();
         }
     }

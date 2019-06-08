@@ -8,7 +8,7 @@ public class AimIKHelper : MonoBehaviour
     private Player _player;
     [SerializeField] private AimIK aimIK;
     [SerializeField] private Transform _target;
-    private float positionWeightIK;
+    [SerializeField] private float positionWeightIK;
     public float weightSpeed;
     public void Initialize(Player player)
     {
@@ -29,9 +29,10 @@ public class AimIKHelper : MonoBehaviour
             {
                 positionWeightIK += Time.deltaTime * weightSpeed;
                 positionWeightIK = Mathf.Clamp01(positionWeightIK);
-
-                aimIK.solver.IKPosition = _target.position;
+                //positionWeightIK = 1;
                 aimIK.solver.IKPositionWeight = positionWeightIK;
+                aimIK.solver.SetIKPosition(_target.position);
+              
             }
             else
             {
@@ -51,6 +52,7 @@ public class AimIKHelper : MonoBehaviour
 
     public void SetTarget(Transform target)
     {
+        if(_target == null)
         _target = target;
     }
 }

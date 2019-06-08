@@ -12,7 +12,9 @@ public class PlayerInput : MonoBehaviour
     public float vertical { get { return _vertical; } }
     [SerializeField] private bool _aim;
     public bool aim { get { return _aim; } }
-
+    [SerializeField]
+    private bool _fire;
+    public bool fire { get { return _fire; } }
     [SerializeField]
     private float _mouseX;
     public float mouseX { get { return _mouseX; } }
@@ -35,6 +37,8 @@ public class PlayerInput : MonoBehaviour
         _vertical = Input.GetAxis("Vertical");
         _mouseX = Input.GetAxis("Mouse X");
         _mouseY = Input.GetAxis("Mouse Y");
-        _aim = Input.GetMouseButton(1);
+        //_aim = Input.GetMouseButton(1);
+        _aim = true;
+        _fire = Input.GetMouseButton(0);
     }
 }

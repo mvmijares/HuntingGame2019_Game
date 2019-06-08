@@ -18,12 +18,10 @@ public class WeaponAim : MonoBehaviour
         if (player)
         {
             _player = player;
-
             _target = new GameObject("Aiming Focal Point").transform;
 
         }
     }
-
     private void Update()
     {
         if (_player)

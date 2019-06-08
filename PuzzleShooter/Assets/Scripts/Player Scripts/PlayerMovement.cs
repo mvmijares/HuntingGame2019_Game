@@ -11,7 +11,7 @@ public class PlayerMovement : MonoBehaviour
     private PlayerInput _playerInput;
     private Animator anim;
 
-    private float horizontalInput; // caching horizontalInput
+    private float cameraInputH; // caching horizontalInput
     private Quaternion quaternionFromRotation;
     private Quaternion quaternionToRotation;
 
@@ -29,22 +29,19 @@ public class PlayerMovement : MonoBehaviour
         HandleAnimations();
     }
 
-
     private void ApplyInput()
     {
         Move();
-
-        if(_playerInput.vertical != 0)
-            Turn();
+        Turn();
     }
     private void Move()
     {
-        transform.Translate(Vector3.forward * _playerInput.vertical * _player.moveSpeed * Time.deltaTime);
+        transform.Translate(transform.forward * _playerInput.vertical * _player.moveSpeed * Time.deltaTime);
     }
     private void Turn()
     {
-        horizontalInput += _playerInput.horizontal;
-        quaternionToRotation = Quaternion.Euler(0, horizontalInput, 0);
+        cameraInputH += _playerInput.mouseX;
+        quaternionToRotation = Quaternion.Euler(0, cameraInputH, 0);
         transform.rotation = Quaternion.Slerp(quaternionFromRotation, quaternionToRotation, Time.deltaTime * _player.turnSpeed);
     }
     private void HandleAnimations()

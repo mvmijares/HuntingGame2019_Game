@@ -13,6 +13,7 @@ public class CameraController : MonoBehaviour
     public float normalFOV = 60f;
     public float aimFOV = 45f;
     public float distanceFromTarget;
+    public float heightPosition;
     [Tooltip("Offset from the camera focal point")]
     public Vector3 offset;
 
@@ -21,6 +22,7 @@ public class CameraController : MonoBehaviour
 
     public Vector2 verticalLookClamp; //min, max for how much the player can look up or down
     private float verticalInput;
+    private float horizontalInput;
     [SerializeField] private float verticalLookSpeed;
     private Quaternion verticalFromRotation;
     private Quaternion verticalToRotation;
@@ -32,32 +34,50 @@ public class CameraController : MonoBehaviour
         if (player)
         {
             _player = player;
+            Cursor.lockState = CursorLockMode.Locked;
+            component = GetComponent<Camera>();
+            lookDirection = new Ray();
 
+            
         }
-    }
-    private void Awake()
-    {
-        Cursor.lockState = CursorLockMode.Locked;
-        component = GetComponent<Camera>();
-        lookDirection = new Ray();
     }
 
     private void LateUpdate()
     {
-        verticalInput += _player.playerInput.mouseY;
-        verticalInput = Mathf.Clamp(verticalInput, verticalLookClamp.x, verticalLookClamp.y);
-        verticalToRotation = Quaternion.Euler(-verticalInput,-5, 0);
-        verticalFromRotation = transform.localRotation;
-        transform.localRotation = Quaternion.Slerp(verticalFromRotation, verticalToRotation, Time.deltaTime * verticalLookSpeed);
+        MoveCamera();
+        RotateCamera();
+        CreateCameraDirection();
+    }
+
+    
+    private void MoveCamera()
+    {
+        Vector3 followVector = _player.transform.forward * distanceFromTarget;
+        Vector3 heightVector = Vector3.up * heightPosition;
+
+        transform.position = _player.transform.position - followVector + heightVector;
 
         if (_player)
-            component.fieldOfView = (_player.aim) ? aimFOV : normalFOV;
-        
+            component.fieldOfView = (_player.playerInput.aim) ? aimFOV : normalFOV;
+
+    }
+    private void RotateCamera()
+    {
+
+        verticalInput += _player.playerInput.mouseY;
+        horizontalInput += _player.playerInput.mouseX;
+
+        //verticalInput = Mathf.Clamp(verticalInput, verticalLookClamp.x, verticalLookClamp.y);
+        //verticalToRotation = Quaternion.Euler(0, -verticalInput, 0);
+        //transform.rotation = Quaternion.Slerp(transform.rotation, verticalToRotation, Time.deltaTime * _player.turnSpeed);
+
+        Quaternion horizontalRotation = Quaternion.Euler(0, -horizontalInput, 0);
+        transform.rotation = Quaternion.Slerp(transform.rotation, horizontalRotation, 0);
        
-        currentPosition = transform.localPosition;
-        transform.localPosition = new Vector3(currentPosition.x, currentPosition.y, distanceFromTarget);
-
+    }
+    
+    private void CreateCameraDirection()
+    {
         lookDirection = new Ray(transform.position, transform.forward); // TODO: Create a better method of creating camera look direction
-
     }
 }

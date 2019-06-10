@@ -21,6 +21,9 @@ public class PlayerInput : MonoBehaviour
     [SerializeField]
     private float _mouseY;
     public float mouseY { get { return _mouseY; } }
+
+    public float mouseYSpeed;
+    public float mouseXSpeed;
     #endregion
 
     public void Initialize(Player player)
@@ -37,8 +40,7 @@ public class PlayerInput : MonoBehaviour
         _vertical = Input.GetAxis("Vertical");
         _mouseX = Input.GetAxis("Mouse X");
         _mouseY = Input.GetAxis("Mouse Y");
-        //_aim = Input.GetMouseButton(1);
-        _aim = true;
+        _aim = Input.GetMouseButton(1);
         _fire = Input.GetMouseButton(0);
     }
 }

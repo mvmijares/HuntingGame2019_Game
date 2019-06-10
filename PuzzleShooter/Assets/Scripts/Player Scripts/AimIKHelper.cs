@@ -11,6 +11,7 @@ public class AimIKHelper : MonoBehaviour
     [SerializeField] private float positionWeightIK;
     public bool disableIK;
     public float weightSpeed;
+
     public void Initialize(Player player)
     {
         if (player)
@@ -20,10 +21,10 @@ public class AimIKHelper : MonoBehaviour
         }
     }
 
-    private void LateUpdate()
+    public void LateTick()
     {
         if (!aimIK) return;
-        if (!disableIK) return;
+        if (disableIK) return;
 
         if(_target != null)
         {
@@ -31,7 +32,6 @@ public class AimIKHelper : MonoBehaviour
             {
                 positionWeightIK += Time.deltaTime * weightSpeed;
                 positionWeightIK = Mathf.Clamp01(positionWeightIK);
-                //positionWeightIK = 1;
                 aimIK.solver.IKPositionWeight = positionWeightIK;
                 aimIK.solver.SetIKPosition(_target.position);
               

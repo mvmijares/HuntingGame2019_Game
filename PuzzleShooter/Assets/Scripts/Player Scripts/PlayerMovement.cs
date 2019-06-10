@@ -35,13 +35,13 @@ public class PlayerMovement : MonoBehaviour
     }
     private void Move()
     {
-        transform.Translate(transform.forward * _playerInput.vertical * _player.moveSpeed * Time.deltaTime);
+        transform.position += transform.forward * _playerInput.vertical * Time.deltaTime * _player.moveSpeed;
     }
     private void Turn()
     {
         cameraInputH += _playerInput.mouseX;
         quaternionToRotation = Quaternion.Euler(0, cameraInputH, 0);
-        transform.rotation = Quaternion.Slerp(quaternionFromRotation, quaternionToRotation, Time.deltaTime * _player.turnSpeed);
+        transform.rotation = Quaternion.Slerp(transform.rotation, quaternionToRotation, Time.deltaTime * _player.turnSpeed);
     }
     private void HandleAnimations()
     {

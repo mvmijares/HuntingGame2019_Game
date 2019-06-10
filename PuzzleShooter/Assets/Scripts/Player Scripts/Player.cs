@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    [SerializeField] private GameManager _gameManager;
     private Animator anim;
     PlayerInput _playerInput;
     public PlayerInput playerInput { get { return _playerInput; } }
@@ -20,25 +21,33 @@ public class Player : MonoBehaviour
     public float moveSpeed;
     [Tooltip("Player turn speed")]
     public float turnSpeed;
+    public float aimSpeed = 1;
 
 
     private float horizontalInput;
     private Quaternion quaternionFromRotation;
     private Quaternion quaternionToRotation;
-    private void Awake()
+
+    public void Initialize(GameManager gameManager)
     {
-        _playerInput = GetComponent<PlayerInput>();
-        _playerInput.Initialize(this);
-        _playerMovement = GetComponent<PlayerMovement>();
-        _playerMovement.Initialize(this);
-        _aimIKHelper = GetComponentInChildren<AimIKHelper>(); // assuming we only have one instance in player object
-        _aimIKHelper.Initialize(this);
-        _weaponAim = GetComponent<WeaponAim>();
-        _weaponAim.Initialize(this);
-        _weapon = GetComponentInChildren<Weapon>();
-        _weapon.Initialize(this);
-
-
-        cameraController.Initialize(this);
+        _gameManager = gameManager;
+        if (_gameManager)
+        {
+            _playerInput = GetComponent<PlayerInput>();
+            _playerInput.Initialize(this);
+            _playerMovement = GetComponent<PlayerMovement>();
+            _playerMovement.Initialize(this);
+            _aimIKHelper = GetComponentInChildren<AimIKHelper>(); // assuming we only have one instance in player object
+            _aimIKHelper.Initialize(this);
+            _weaponAim = GetComponent<WeaponAim>();
+            _weaponAim.Initialize(this);
+            _weapon = GetComponentInChildren<Weapon>();
+            _weapon.Initialize(this);
+            cameraController.Initialize(this);
+        }
+        else
+        {
+            Debug.Log("No game manager detected in scene.");
+        }
     }
 }

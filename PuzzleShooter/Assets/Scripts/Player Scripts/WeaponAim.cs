@@ -18,21 +18,21 @@ public class WeaponAim : MonoBehaviour
         if (player)
         {
             _player = player;
-            //_target = new GameObject("Aiming Focal Point").transform;
-
+            _target = new GameObject("Weapon Aim Point").transform;
         }
     }
-    private void Update()
+
+    public void LateTick()
     {
         if (_player)
         {
-
             SetTarget();
         }
     }
 
     private void SetTarget()
     {
+        _target.position = _player.cameraController.lookDirection.GetPoint(distanceFromPlayer);
         _player.aimIKHelper.SetTarget(_target);
     }
 

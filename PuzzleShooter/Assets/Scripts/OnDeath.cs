@@ -1,18 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// TODO : Setup a interface class that calls Event Functions
+/// </summary>
 public class OnDeath : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    Material mat;
+    public void Initialize()
     {
-        
+        mat = GetComponent<Material>();
     }
-
-    // Update is called once per frame
-    void Update()
+    public void OnDeathEventCalled()
     {
-        
+
     }
 }

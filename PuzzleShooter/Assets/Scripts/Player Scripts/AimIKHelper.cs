@@ -6,7 +6,9 @@ using RootMotion.FinalIK;
 public class AimIKHelper : MonoBehaviour
 {
     private Player _player;
-    [SerializeField] private AimIK aimIK;
+    [SerializeField] private AimIK rightArmAimIK;
+    [SerializeField] private AimIK leftArmAimIK;
+    [SerializeField] private AimIK spineAimIK;
     [SerializeField] private Transform _target;
     [SerializeField] private float positionWeightIK;
     public bool disableIK;
@@ -17,14 +19,24 @@ public class AimIKHelper : MonoBehaviour
         if (player)
         {
             _player = player;
-            aimIK = GetComponent<AimIK>();
+
+            if (transform.Find("Right Arm IK"))
+                rightArmAimIK = transform.Find("Right Arm IK").GetComponent<AimIK>();
+
+            if (transform.Find("Left Arm IK"))
+                leftArmAimIK = transform.Find("Left Arm IK").GetComponent<AimIK>();
+
+            if (transform.Find("Spine IK"))
+                spineAimIK = transform.Find("Spine IK").GetComponent<AimIK>();
         }
     }
 
     public void LateTick()
     {
-        if (!aimIK) return;
-        if (disableIK) return;
+        if (!rightArmAimIK || !leftArmAimIK || !spineAimIK)
+            return;
+        if (disableIK)
+            return;
 
         if(_target != null)
         {
@@ -32,29 +44,39 @@ public class AimIKHelper : MonoBehaviour
             {
                 positionWeightIK += Time.deltaTime * weightSpeed;
                 positionWeightIK = Mathf.Clamp01(positionWeightIK);
-                aimIK.solver.IKPositionWeight = positionWeightIK;
-                aimIK.solver.SetIKPosition(_target.position);
+                SetPositionWeight(positionWeightIK);
+                SetIKPosition(_target.position);
               
             }
             else
             {
                 positionWeightIK -= Time.deltaTime * weightSpeed;
                 positionWeightIK = Mathf.Clamp01(positionWeightIK);
-                aimIK.solver.IKPositionWeight = 0;
+                SetPositionWeight(0);
             }
         }
         else
         {
             positionWeightIK -= Time.deltaTime * weightSpeed;
             positionWeightIK = Mathf.Clamp01(positionWeightIK);
-
-            aimIK.solver.IKPositionWeight = 0;
+            SetPositionWeight(0);
         }
     }
-
+    private void SetPositionWeight(float weight)
+    {
+        rightArmAimIK.solver.IKPositionWeight = weight;
+        leftArmAimIK.solver.IKPositionWeight = weight;
+        spineAimIK.solver.IKPositionWeight = weight;
+    }
+    private void SetIKPosition(Vector3 position)
+    {
+        rightArmAimIK.solver.SetIKPosition(position);
+        leftArmAimIK.solver.SetIKPosition(position);
+        spineAimIK.solver.SetIKPosition(position);
+    }
     public void SetTarget(Transform target)
     {
         if(_target == null)
-        _target = target;
+            _target = target;
     }
 }

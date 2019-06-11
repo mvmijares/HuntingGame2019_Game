@@ -39,7 +39,7 @@ public class Player : MonoBehaviour
             _playerMovement.Initialize(this);
             _aimIKHelper = GetComponentInChildren<AimIKHelper>(); // assuming we only have one instance in player object
             _aimIKHelper.Initialize(this);
-            _weaponAim = GetComponent<WeaponAim>();
+            _weaponAim = GetComponentInChildren<WeaponAim>();
             _weaponAim.Initialize(this);
             _weapon = GetComponentInChildren<Weapon>();
             _weapon.Initialize(this);

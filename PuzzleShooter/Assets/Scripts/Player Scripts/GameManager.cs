@@ -9,19 +9,15 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         _player = FindObjectOfType<Player>();
-        if (_player) _player.Initialize(this);
+        if (_player)
+            _player.ObjectInitialize(this);
     }
     private void Update()
     {
-        
+        _player.CustomUpdate();
     }
     private void LateUpdate()
     {
-        // TODO : Setup a better method of order execution
-        // ORDER
-        // Set target, update IK animations, lastly move/ rotate camera to follow player
-        _player.weaponAim.LateTick();
-        _player.aimIKHelper.LateTick();
-        _player.cameraController.LateTick();
+        _player.CustomLateUpdate();
     }
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : BaseObject
 {
     [SerializeField] private GameManager _gameManager;
     private Animator anim;
@@ -28,26 +28,24 @@ public class Player : MonoBehaviour
     private Quaternion quaternionFromRotation;
     private Quaternion quaternionToRotation;
 
-    public void Initialize(GameManager gameManager)
+    public override void ObjectInitialize(GameManager manager)
     {
-        _gameManager = gameManager;
-        if (_gameManager)
-        {
-            _playerInput = GetComponent<PlayerInput>();
-            _playerInput.Initialize(this);
-            _playerMovement = GetComponent<PlayerMovement>();
-            _playerMovement.Initialize(this);
-            _aimIKHelper = GetComponentInChildren<AimIKHelper>(); // assuming we only have one instance in player object
-            _aimIKHelper.Initialize(this);
-            _weaponAim = GetComponentInChildren<WeaponAim>();
-            _weaponAim.Initialize(this);
-            _weapon = GetComponentInChildren<Weapon>();
-            _weapon.Initialize(this);
-            cameraController.Initialize(this);
-        }
-        else
-        {
-            Debug.Log("No game manager detected in scene.");
-        }
+        base.ObjectInitialize(manager);
+        _playerInput = GetComponent<PlayerInput>();
+        _playerInput.Initialize(this);
+        _playerMovement = GetComponent<PlayerMovement>();
+        _playerMovement.Initialize(this);
+        _aimIKHelper = GetComponentInChildren<AimIKHelper>(); // assuming we only have one instance in player object
+        _aimIKHelper.Initialize(this);
+        _weaponAim = GetComponentInChildren<WeaponAim>();
+        _weaponAim.Initialize(this);
+        _weapon = GetComponentInChildren<Weapon>();
+        _weapon.Initialize(this);
+        cameraController.Initialize(this);
+    }
+
+    public override void CustomUpdate()
+    {
+        base.CustomUpdate();
     }
 }

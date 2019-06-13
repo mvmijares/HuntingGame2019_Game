@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Player : BaseObject
 {
-    [SerializeField] private GameManager _gameManager;
     private Animator anim;
     PlayerInput _playerInput;
     public PlayerInput playerInput { get { return _playerInput; } }
@@ -47,5 +46,16 @@ public class Player : BaseObject
     public override void CustomUpdate()
     {
         base.CustomUpdate();
+        _playerInput.CustomUpdate();
+        _playerMovement.CustomUpdate();
+        cameraController.CustomUpdate();
+    }
+    public override void CustomLateUpdate()
+    {
+        base.CustomLateUpdate();
+        weaponAim.CustomLateUpdate();
+        _aimIKHelper.CustomLateUpdate();
+
+        cameraController.CustomLateUpdate();
     }
 }

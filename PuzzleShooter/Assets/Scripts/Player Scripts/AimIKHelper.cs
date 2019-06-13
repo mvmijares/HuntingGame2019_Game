@@ -31,7 +31,7 @@ public class AimIKHelper : MonoBehaviour
         }
     }
 
-    public void LateTick()
+    public void CustomLateUpdate()
     {
         if (!rightArmAimIK || !leftArmAimIK || !spineAimIK)
             return;
@@ -46,7 +46,6 @@ public class AimIKHelper : MonoBehaviour
                 positionWeightIK = Mathf.Clamp01(positionWeightIK);
                 SetPositionWeight(positionWeightIK);
                 SetIKPosition(_target.position);
-              
             }
             else
             {

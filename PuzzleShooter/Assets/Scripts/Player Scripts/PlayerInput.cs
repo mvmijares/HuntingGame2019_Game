@@ -30,7 +30,7 @@ public class PlayerInput : MonoBehaviour
     {
         _player = player;
     }
-    private void Update()
+    public void CustomUpdate()
     {
         GetPlayerInput();
     }

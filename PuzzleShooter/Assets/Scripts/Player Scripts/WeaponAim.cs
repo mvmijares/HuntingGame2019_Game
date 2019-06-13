@@ -22,7 +22,7 @@ public class WeaponAim : MonoBehaviour
         }
     }
 
-    public void LateTick()
+    public void CustomLateUpdate()
     {
         if (_player)
         {

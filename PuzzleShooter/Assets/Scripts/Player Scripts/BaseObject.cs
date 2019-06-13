@@ -17,14 +17,9 @@ public class BaseObject : MonoBehaviour
     /// BaseObject custom initialization function
     /// </summary>
     /// <param name="manager"></param>
-    public virtual void ObjectInitialize(GameManager manager)
+    public virtual void ObjectInitialize(GameManager gameManager)
     {
-        _gameManager = manager;
-        if (!manager)
-        {
-            Debug.Log("No manager was found.");
-            return;
-        }
+        _gameManager = gameManager;
     }
 
     /// <summary>

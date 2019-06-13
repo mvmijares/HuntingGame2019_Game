@@ -41,12 +41,12 @@ public class CameraController : MonoBehaviour
             transform.SetParent(_target);
         }
     }
-    private void Update()
+    public void CustomUpdate()
     {
         MoveCamera();
         CreateCameraDirection();
     }
-    public void LateTick()
+    public void CustomLateUpdate()
     {
         RotateCamera();
     }
@@ -56,14 +56,10 @@ public class CameraController : MonoBehaviour
 
         float FOV = (_player.playerInput.aim) ? aimFOV : normalFOV;
 
-
         component.fieldOfView = Mathf.Lerp(component.fieldOfView, FOV, Time.deltaTime * _player.aimSpeed);
-        
-        
     }
     private void RotateCamera()
     {
-        
         Quaternion newRotation;
         verticalInput += _player.playerInput.mouseY;
 

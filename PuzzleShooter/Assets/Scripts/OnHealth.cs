@@ -6,6 +6,15 @@ public class OnHealth : MonoBehaviour
 {
     [Tooltip("Health prior to game start.")]
     public int baseHealth;
+    private bool _isDead;
+    public bool isDead
+    {
+        get
+        {
+            return _isDead = (_health <= 0) ? true : false;
+        }
+    }
+    
     [SerializeField] private int _health;
 
     [HideInInspector]

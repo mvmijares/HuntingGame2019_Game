@@ -66,7 +66,6 @@ public class Weapon : MonoBehaviour
     {
         if (!_player) return;
 
- 
         RaycastHit hit;
         Vector3 direction = _player.cameraController.lookDirection.direction;
         Debug.DrawRay(firePoint.position, direction * fireDistance, Color.red, 2.0f);

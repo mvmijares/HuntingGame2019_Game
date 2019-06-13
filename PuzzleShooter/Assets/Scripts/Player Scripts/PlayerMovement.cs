@@ -22,7 +22,7 @@ public class PlayerMovement : MonoBehaviour
         anim = GetComponentInChildren<Animator>();
     }
 
-    private void Update()
+    public void CustomUpdate()
     {
         ApplyInput();
         HandleAnimations();

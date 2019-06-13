@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] Player _player;
     [SerializeField] EnemyManager _eManager;
     //Testing Purposes
-    [SerializeField] Enemy enemy_1;
+    public float numEnemies;
     private void Awake()
     {
         _player = FindObjectOfType<Player>();
@@ -15,16 +15,25 @@ public class GameManager : MonoBehaviour
             _player.ObjectInitialize(this);
 
         _eManager = FindObjectOfType<EnemyManager>();
-        if(_eManager)
-            _eManager.Obje
+        if (_eManager)
+            _eManager.Initialize(this);
+
+        if (numEnemies > 0)
+        {
+            for (int i = 0; i < numEnemies; i++)
+            {
+                _eManager.CreateNewEnemy();
+            }
+        }
     }
     private void Update()
     {
         _player.CustomUpdate();
-        enemy_1.CustomUpdate();
+        _eManager.UpdateEnemyList();
     }
     private void LateUpdate()
     {
         _player.CustomLateUpdate();
+        _eManager.LateUpdateEnemyList();
     }
 }

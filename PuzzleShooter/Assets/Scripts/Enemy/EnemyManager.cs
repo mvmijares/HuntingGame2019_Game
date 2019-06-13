@@ -6,7 +6,7 @@ public class EnemyManager : MonoBehaviour
 {
     List<Enemy> enemyList;
     GameManager _gameManager;
-    public void Initilize(GameManager manager)
+    public void Initialize(GameManager manager)
     {
         _gameManager = manager;
         enemyList = new List<Enemy>();
@@ -15,7 +15,21 @@ public class EnemyManager : MonoBehaviour
 
     public void CreateNewEnemy()
     {
-        Enemy enemy = new Enemy();
-
+        Enemy enemy = new Enemy(this, "Chicken",);
+        enemyList.Add(enemy);
+    }
+    public void UpdateEnemyList()
+    {
+        foreach(Enemy e in enemyList)
+        {
+            e.CustomUpdate();
+        }
+    }
+    public void LateUpdateEnemyList()
+    {
+        foreach(Enemy e in enemyList)
+        {
+            e.CustomLateUpdate();
+        }
     }
 }

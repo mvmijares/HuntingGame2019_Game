@@ -33,21 +33,34 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float idleTime;
     [SerializeField] private float currIdleTime;
     public float walkRadius;
+    public GameObject enemyPrefab;
     [SerializeField] EnemyTarget target;
     public float remainingDistance;
     Animator anim;
     Vector3 moveDirection;
 
-    public void Initialize(EnemyManager enemyManager)
+    /// <summary>
+    /// Constructor for Enemy
+    /// </summary>
+    /// <param name="manager">Reference to Enemy Manager class</param>
+    /// <param name="name">Name of enemy.</param>
+    /// <param name="position">World position for game object.</param>
+    public Enemy(EnemyManager manager, string name, Vector3 position)
     {
-        _enemyManager = enemyManager;
+        GameObject newEnemy = Instantiate(enemyPrefab, position, enemyPrefab.transform.rotation);
+
+        newEnemy.name = name;
+        _enemyManager = manager;
+        Initialize();
+    }
+    private void Initialize()
+    {
         state = AIState.Idle;
         target.set = false;
         target.position = Vector3.zero;
         idleTime = Random.Range(idleTimeMinMax.x, idleTimeMinMax.y);
         anim = GetComponentInChildren<Animator>();
     }
-
     public void CustomUpdate()
     {
         AISolver();

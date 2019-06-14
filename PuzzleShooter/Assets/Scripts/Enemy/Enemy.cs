@@ -7,7 +7,10 @@ public enum AIState
 {
     Idle, Walk, Run
 };
-
+public enum EnemyType
+{
+    Chicken
+}
 struct EnemyTarget
 {
     public bool set;
@@ -26,58 +29,64 @@ public class Enemy : MonoBehaviour
     //TODO : make a seperate class for enemy AI solving
     public enum AIState { Walk, Run, Idle}
     [SerializeField] AIState state;
+    EnemyType type;
     private EnemyManager _enemyManager;
+    private float idleTime;
+    private float currIdleTime;
+    [SerializeField] EnemyTarget target;
+    Animator anim;
+    Vector3 moveDirection;
+    Vector3 spawnPoint;
+
     public float moveSpeed;
     public float turnSpeed;
     public Vector2 idleTimeMinMax;
-    [SerializeField] private float idleTime;
-    [SerializeField] private float currIdleTime;
     public float walkRadius;
-    public GameObject enemyPrefab;
-    [SerializeField] EnemyTarget target;
     public float remainingDistance;
-    Animator anim;
-    Vector3 moveDirection;
-
     /// <summary>
     /// Constructor for Enemy
     /// </summary>
     /// <param name="manager">Reference to Enemy Manager class</param>
     /// <param name="name">Name of enemy.</param>
     /// <param name="position">World position for game object.</param>
-    public Enemy(EnemyManager manager, string name, Vector3 position)
+    public void Initialize(EnemyManager manager)
     {
-        GameObject newEnemy = Instantiate(enemyPrefab, position, enemyPrefab.transform.rotation);
 
-        newEnemy.name = name;
         _enemyManager = manager;
-        Initialize();
-    }
-    private void Initialize()
-    {
+        anim = GetComponentInChildren<Animator>();
         state = AIState.Idle;
+        spawnPoint = transform.position;
         target.set = false;
         target.position = Vector3.zero;
-        idleTime = Random.Range(idleTimeMinMax.x, idleTimeMinMax.y);
-        anim = GetComponentInChildren<Animator>();
+        type = EnemyType.Chicken;
+        SetupEnemy();
     }
-    public void CustomUpdate()
+    /// <summary>
+    /// Setup a definition for our enemy type.
+    /// TODO : Create a enemy type class and use inheritence
+    /// </summary>
+    private void SetupEnemy()
+    {
+        switch (type)
+        {
+            case EnemyType.Chicken:
+                {
+                    //Should be setup in Enemy Factor
+                    idleTimeMinMax = new Vector2(3, 5f);
+                    walkRadius = 5f;
+                    remainingDistance = 1f;
+                    break;
+                }
+        }
+
+        idleTime = Random.Range(idleTimeMinMax.x, idleTimeMinMax.y);
+    }
+
+    private void Update()
     {
         AISolver();
         ApplyMovement();
-        HandleAnimations();
     }
-
-   
-    public void CustomLateUpdate()
-    {
-
-    }
-    private void HandleAnimations()
-    {
-        
-    }
-
     /// <summary>
     /// Method for state machine type AI system.
     /// </summary>
@@ -126,8 +135,9 @@ public class Enemy : MonoBehaviour
         // Switch to Idle State
         //TODO // Check if position is within game boundaries OR if we can actually get to target
         if (!target.set) {
-            target.position = (transform.position + Random.insideUnitSphere) * walkRadius;
-            target.position = new Vector3(target.position.x, 0, target.position.z);
+            Vector3 randomPoint = spawnPoint + (Random.insideUnitSphere * walkRadius);
+            target.position = new Vector3(randomPoint.x, GetHeightPosition(randomPoint),randomPoint.z);
+            Debug.Log("Target position is" + target.position);
             target.set = true;
         }
         else
@@ -139,6 +149,26 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    private float GetHeightPosition(Vector3 randomPoint)
+    {
+        Vector3 heightPoint = new Vector3(randomPoint.x, 10, randomPoint.z);
+        float height = 0;
+        float offset = 0f; //offset position from the hit point on the y axis; 
+        RaycastHit hit;
+        Debug.DrawRay(heightPoint, Vector3.down * 1000f,Color.red, 2.0f);
+        int groundMask = 1 << LayerMask.NameToLayer("Ground");
+        if (Physics.Raycast(heightPoint, Vector3.down, out hit, 10f, groundMask))
+        {
+            Debug.Log("We hit the ground... calculating point");
+            height = hit.point.y + offset;
+        }
+        else
+        {
+            Debug.Log("We did not hit the ground");
+        }
+        return height;
+    }
+
     /// <summary>
     /// Check distance before reseting state
     /// </summary>
@@ -146,8 +176,9 @@ public class Enemy : MonoBehaviour
     {
         if (target.set)
         {
-            float magnitude = (target.position - transform.position).sqrMagnitude;
-            if (magnitude <= remainingDistance * remainingDistance)
+            float magnitude = (target.position - transform.position).magnitude;
+            //Debug.Log(magnitude);
+            if (magnitude <= remainingDistance)
             {
                 if (state == AIState.Walk)
                 {

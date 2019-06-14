@@ -29,11 +29,9 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         _player.CustomUpdate();
-        _eManager.UpdateEnemyList();
     }
     private void LateUpdate()
     {
         _player.CustomLateUpdate();
-        _eManager.LateUpdateEnemyList();
     }
 }

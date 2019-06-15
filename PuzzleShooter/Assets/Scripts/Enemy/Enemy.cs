@@ -35,6 +35,7 @@ public class Enemy : MonoBehaviour
     private float currIdleTime;
     [SerializeField] EnemyTarget target;
     Animator anim;
+    GameObject model;
     Vector3 moveDirection;
     Vector3 spawnPoint;
 
@@ -43,6 +44,8 @@ public class Enemy : MonoBehaviour
     public Vector2 idleTimeMinMax;
     public float walkRadius;
     public float remainingDistance;
+
+    OnHealth healthComponent;
     /// <summary>
     /// Constructor for Enemy
     /// </summary>
@@ -51,9 +54,11 @@ public class Enemy : MonoBehaviour
     /// <param name="position">World position for game object.</param>
     public void Initialize(EnemyManager manager)
     {
-
+        healthComponent = gameObject.AddComponent<OnHealth>();
+        healthComponent.health = 5;
         _enemyManager = manager;
         anim = GetComponentInChildren<Animator>();
+        model = anim.transform.gameObject; //We know that the animator is attached to model gameobject
         state = AIState.Idle;
         spawnPoint = transform.position;
         target.set = false;
@@ -84,9 +89,22 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
-        AISolver();
-        ApplyMovement();
+        if (!healthComponent.isDead)
+        {
+            AISolver();
+            ApplyMovement();
+        }
+        else
+        {
+            HandleDeathState();
+        }
     }
+
+    private void HandleDeathState()
+    {
+        model.SetActive(false);
+    }
+
     /// <summary>
     /// Method for state machine type AI system.
     /// </summary>
@@ -137,7 +155,7 @@ public class Enemy : MonoBehaviour
         if (!target.set) {
             Vector3 randomPoint = spawnPoint + (Random.insideUnitSphere * walkRadius);
             target.position = new Vector3(randomPoint.x, GetHeightPosition(randomPoint),randomPoint.z);
-            Debug.Log("Target position is" + target.position);
+            //Debug.Log("Target position is" + target.position);
             target.set = true;
         }
         else
@@ -159,12 +177,12 @@ public class Enemy : MonoBehaviour
         int groundMask = 1 << LayerMask.NameToLayer("Ground");
         if (Physics.Raycast(heightPoint, Vector3.down, out hit, 10f, groundMask))
         {
-            Debug.Log("We hit the ground... calculating point");
+            //Debug.Log("We hit the ground... calculating point");
             height = hit.point.y + offset;
         }
         else
         {
-            Debug.Log("We did not hit the ground");
+            //Debug.Log("We did not hit the ground");
         }
         return height;
     }
@@ -194,9 +212,13 @@ public class Enemy : MonoBehaviour
     private void ApplyMovement()
     {
         if (target.set)
-        { 
-            Quaternion newRotation = Quaternion.LookRotation(moveDirection, Vector3.up);
-            transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, Time.deltaTime * turnSpeed);
+        {
+            Quaternion newRotation = Quaternion.identity;
+            if(moveDirection != Vector3.zero)
+            {
+                newRotation = Quaternion.LookRotation(moveDirection, Vector3.up);
+                transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, Time.deltaTime * turnSpeed);
+            }
             transform.position += transform.forward * Time.deltaTime * moveSpeed;
         }
     }

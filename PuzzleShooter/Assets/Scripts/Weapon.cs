@@ -84,17 +84,22 @@ public class Weapon : MonoBehaviour
             CheckWeaponCollision(hit);
         }
     }
+    /// <summary>
+    /// Function to handle weapon collision functionality
+    /// </summary>
+    /// <param name="hit">The object that is being checked by raycast</param>
     private void CheckWeaponCollision(RaycastHit hit)
     {
         if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Ground"))
         {
             GameObject clone = Instantiate(groundHitPrefab, hit.point, groundHitPrefab.transform.rotation) as GameObject;
         }
-        else if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+        else if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Enemy") && !hit.collider.GetComponent<OnHealth>().isDead)
         {
             GameObject clone = Instantiate(enemyHitPrefab, hit.point, enemyHitPrefab.transform.rotation) as GameObject;
         }
-        if (hit.collider.GetComponent<OnHealth>() && !hit.collider.GetComponent<Player>())
+
+        if (hit.collider.GetComponent<OnHealth>() && !hit.collider.GetComponent<OnHealth>().isDead)
         {
             hit.collider.GetComponent<OnHealth>().OnTakeDamage(weaponDamage);
         }

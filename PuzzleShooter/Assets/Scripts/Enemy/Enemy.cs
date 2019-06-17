@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -31,12 +32,17 @@ public class Enemy : MonoBehaviour
     [SerializeField] AIState state;
     EnemyType type;
     private EnemyManager _enemyManager;
+    private CapsuleCollider col;
+    private OnHealth healthComponent;
+    private GameObject model;
     private float idleTime;
     private float currIdleTime;
-    [SerializeField] EnemyTarget target;
-    Animator anim;
-    Vector3 moveDirection;
-    Vector3 spawnPoint;
+    private EnemyTarget target;
+    private Animator anim;
+    private Vector3 moveDirection;
+    private Vector3 spawnPoint;
+    private GameObject deathEffectPrefab;
+    private bool isDeathAnimPlaying = false;
 
     public float moveSpeed;
     public float turnSpeed;
@@ -51,14 +57,20 @@ public class Enemy : MonoBehaviour
     /// <param name="position">World position for game object.</param>
     public void Initialize(EnemyManager manager)
     {
-
         _enemyManager = manager;
         anim = GetComponentInChildren<Animator>();
+        if (anim)
+            model = anim.gameObject; // assuming our model has a animator attached to it.
+
+        col = GetComponent<CapsuleCollider>();
+        healthComponent = GetComponent<OnHealth>();
+
         state = AIState.Idle;
         spawnPoint = transform.position;
         target.set = false;
         target.position = Vector3.zero;
-        type = EnemyType.Chicken;
+        deathEffectPrefab = Resources.Load("EnemyDeath_Prefab") as GameObject;
+        type = EnemyType.Chicken; // Prototyping purposes
         SetupEnemy();
     }
     /// <summary>
@@ -79,14 +91,38 @@ public class Enemy : MonoBehaviour
                 }
         }
 
-        idleTime = Random.Range(idleTimeMinMax.x, idleTimeMinMax.y);
+        idleTime = UnityEngine.Random.Range(idleTimeMinMax.x, idleTimeMinMax.y);
     }
-
+    //Enemy doesn't require a custom update
     private void Update()
     {
-        AISolver();
-        ApplyMovement();
+        bool dead = healthComponent.isDead;
+        if (!dead)
+        {
+            AISolver();
+            ApplyMovement();
+        }
+        else
+        {
+            OnDeath();
+        }
+
     }
+    /// <summary>
+    /// Handles death functionality for enemy.
+    /// TODO : Make a interface for death animation calls
+    /// </summary>
+    private void OnDeath()
+    {
+        if (!isDeathAnimPlaying)
+        {
+            GameObject clone = Instantiate(deathEffectPrefab, transform.position, deathEffectPrefab.transform.rotation) as GameObject;
+            model.SetActive(false);
+            col.enabled = false;
+            isDeathAnimPlaying = !isDeathAnimPlaying;
+        }
+    }
+
     /// <summary>
     /// Method for state machine type AI system.
     /// </summary>
@@ -113,7 +149,7 @@ public class Enemy : MonoBehaviour
     {
         if(idleTime == 0)
         {
-            idleTime = Random.Range(idleTimeMinMax.x, idleTimeMinMax.y);
+            idleTime = UnityEngine.Random.Range(idleTimeMinMax.x, idleTimeMinMax.y);
         }
         currIdleTime += Time.deltaTime;
         if(currIdleTime > idleTime)
@@ -135,7 +171,7 @@ public class Enemy : MonoBehaviour
         // Switch to Idle State
         //TODO // Check if position is within game boundaries OR if we can actually get to target
         if (!target.set) {
-            Vector3 randomPoint = spawnPoint + (Random.insideUnitSphere * walkRadius);
+            Vector3 randomPoint = spawnPoint + (UnityEngine.Random.insideUnitSphere * walkRadius);
             target.position = new Vector3(randomPoint.x, GetHeightPosition(randomPoint),randomPoint.z);
      
             target.set = true;

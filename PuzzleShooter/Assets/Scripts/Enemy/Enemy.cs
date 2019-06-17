@@ -137,14 +137,13 @@ public class Enemy : MonoBehaviour
         if (!target.set) {
             Vector3 randomPoint = spawnPoint + (Random.insideUnitSphere * walkRadius);
             target.position = new Vector3(randomPoint.x, GetHeightPosition(randomPoint),randomPoint.z);
-            Debug.Log("Target position is" + target.position);
+     
             target.set = true;
         }
         else
         {
             moveDirection = (target.position - transform.position).normalized;
             moveDirection = new Vector3(moveDirection.x, 0, moveDirection.z);
-            anim.SetFloat("Speed", 0.5f);
             DistanceCheck();
         }
     }
@@ -159,12 +158,7 @@ public class Enemy : MonoBehaviour
         int groundMask = 1 << LayerMask.NameToLayer("Ground");
         if (Physics.Raycast(heightPoint, Vector3.down, out hit, 10f, groundMask))
         {
-            Debug.Log("We hit the ground... calculating point");
             height = hit.point.y + offset;
-        }
-        else
-        {
-            Debug.Log("We did not hit the ground");
         }
         return height;
     }
@@ -177,7 +171,6 @@ public class Enemy : MonoBehaviour
         if (target.set)
         {
             float magnitude = (target.position - transform.position).magnitude;
-            //Debug.Log(magnitude);
             if (magnitude <= remainingDistance)
             {
                 if (state == AIState.Walk)
@@ -194,9 +187,12 @@ public class Enemy : MonoBehaviour
     private void ApplyMovement()
     {
         if (target.set)
-        { 
-            Quaternion newRotation = Quaternion.LookRotation(moveDirection, Vector3.up);
-            transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, Time.deltaTime * turnSpeed);
+        {
+            if (moveDirection != Vector3.zero)
+            {
+                Quaternion newRotation = Quaternion.LookRotation(moveDirection, Vector3.up);
+                transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, Time.deltaTime * turnSpeed);
+            }
             transform.position += transform.forward * Time.deltaTime * moveSpeed;
         }
     }

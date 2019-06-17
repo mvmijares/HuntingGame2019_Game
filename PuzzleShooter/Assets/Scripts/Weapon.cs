@@ -15,7 +15,9 @@ public class Weapon : MonoBehaviour
     [SerializeField] private Transform firePoint;
     public float fireDistance;
     private bool isCoroutinePlaying;
-    
+    private GameObject missHitPrefab;
+    private GameObject enemyHitPrefab;
+
     public void Initialize(Player player)
     {
         if (player)

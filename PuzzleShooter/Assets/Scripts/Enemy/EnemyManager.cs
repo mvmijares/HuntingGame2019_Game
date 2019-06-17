@@ -7,13 +7,13 @@ public class EnemyManager : MonoBehaviour
     public Transform spawnZoneCenter;
     public float spawnZoneRadius;
     //Raycast from y height to ground to get height position for spawning object
-    public float raycastHeight;
-    public float raycastDistance = 1000f;
-    public LayerMask groundLayerMask;
+    private float raycastHeight = 10f;
+    public float raycastDistance = 15f;
     List<Enemy> enemyList;
     GameManager _gameManager;
     public GameObject enemyPrefab;
     private bool groundCheck = false;
+    private int groundMask;
     /// <summary>
     /// Initialization our our manager class
     /// </summary>
@@ -22,6 +22,7 @@ public class EnemyManager : MonoBehaviour
     {
         _gameManager = manager;
         enemyList = new List<Enemy>();
+        groundMask = 1 << LayerMask.NameToLayer("Ground");
     }
     /// <summary>
     /// Create a new enemy during run-time
@@ -41,27 +42,26 @@ public class EnemyManager : MonoBehaviour
         if(enemyList.Contains(target))
             enemyList.Remove(target);
     }
+
     private Vector3 GetSpawnPosition()
     {
         Vector3 newPosition = Vector3.zero;
         Vector3 tempOfPosition = Vector3.zero;
-        float hieght = 0;
-        float offset = 0;
-        newPosition = Random.insideUnitSphere * spawnZoneRadius;
-        newPosition += spawnZoneCenter.position;
+        float hieght = 1f;
+        float offset = 0.1f;
+
+        newPosition = Random.insideUnitSphere * spawnZoneRadius + spawnZoneCenter.position;
         tempOfPosition = new Vector3(newPosition.x, raycastHeight, newPosition.y);
 
         RaycastHit hit;
-        int groundMask = 1 << LayerMask.NameToLayer("Ground");
+        Debug.DrawRay(tempOfPosition, Vector3.down * raycastDistance, Color.blue);
         if (Physics.Raycast(tempOfPosition, Vector3.down, out hit, raycastDistance, groundMask))
         {
-            Debug.Log("We hit the ground... calculating point");
             groundCheck = true;
             hieght = hit.point.y + offset;
         }
         else
         {
-            Debug.Log("We did not hit the ground");
             groundCheck = false;
         }
         newPosition = new Vector3(newPosition.x, hieght, newPosition.z);

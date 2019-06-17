@@ -71,7 +71,10 @@ public class CameraController : MonoBehaviour
 
     private void CreateCameraDirection()
     {
-        lookDirection = new Ray(transform.position, transform.forward); // TODO: Create a better method of creating camera look direction
+        float distance = (_player.weapon.firePointTransform.position - transform.position).magnitude;
+        Vector3 originPoint = transform.position + (transform.forward * distance);
+        _player.weapon.SetFirePointOrigin(originPoint);
+        
     }
     private void OnDrawGizmos()
     {

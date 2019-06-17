@@ -15,7 +15,7 @@ public class Player : BaseObject
     WeaponAim _weaponAim;
     public WeaponAim weaponAim { get { return _weaponAim;  } }
     Weapon _weapon;
-    public Weapon weapon { get { return weapon; } }
+    public Weapon weapon { get { return _weapon; } }
     [Tooltip("Player move speed")]
     public float moveSpeed;
     [Tooltip("Player turn speed")]
@@ -53,7 +53,7 @@ public class Player : BaseObject
     public override void CustomLateUpdate()
     {
         base.CustomLateUpdate();
-        weaponAim.CustomLateUpdate();
+        _weaponAim.CustomLateUpdate();
         _aimIKHelper.CustomLateUpdate();
 
         cameraController.CustomLateUpdate();

@@ -32,7 +32,8 @@ public class WeaponAim : MonoBehaviour
 
     private void SetTarget()
     {
-        _target.position = _player.cameraController.lookDirection.GetPoint(distanceFromPlayer);
+        _target.position = _player.cameraController.transform.position + _player.cameraController.transform.forward * distanceFromPlayer;
+
         _player.aimIKHelper.SetTarget(_target);
     }
 

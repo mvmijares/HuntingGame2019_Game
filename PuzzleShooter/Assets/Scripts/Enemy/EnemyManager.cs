@@ -45,8 +45,8 @@ public class EnemyManager : MonoBehaviour
     {
         Vector3 newPosition = Vector3.zero;
         Vector3 tempOfPosition = Vector3.zero;
-        float hieght = 10f;
-        float offset = 0.1f;
+        float hieght = 0;
+        float offset = 0;
         newPosition = Random.insideUnitSphere * spawnZoneRadius;
         newPosition += spawnZoneCenter.position;
         tempOfPosition = new Vector3(newPosition.x, raycastHeight, newPosition.y);
@@ -55,13 +55,13 @@ public class EnemyManager : MonoBehaviour
         int groundMask = 1 << LayerMask.NameToLayer("Ground");
         if (Physics.Raycast(tempOfPosition, Vector3.down, out hit, raycastDistance, groundMask))
         {
-            //Debug.Log("We hit the ground... calculating point");
+            Debug.Log("We hit the ground... calculating point");
             groundCheck = true;
             hieght = hit.point.y + offset;
         }
         else
         {
-            //Debug.Log("We did not hit the ground");
+            Debug.Log("We did not hit the ground");
             groundCheck = false;
         }
         newPosition = new Vector3(newPosition.x, hieght, newPosition.z);

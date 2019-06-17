@@ -72,6 +72,7 @@ public class Weapon : MonoBehaviour
         //TODO : Rework a more efficient way of handling physics detection
         if (Physics.Raycast(firePoint.position, direction, out hit, fireDistance))
         {
+<<<<<<< HEAD
             CheckWeaponCollision(hit);
         }
     }
@@ -84,6 +85,12 @@ public class Weapon : MonoBehaviour
         if (hit.collider.GetComponent<OnHealth>() && !hit.collider.GetComponent<Player>())
         {
             hit.collider.GetComponent<OnHealth>().OnTakeDamage(weaponDamage);
+=======
+            if (hit.collider.GetComponent<OnHealth>() && !hit.collider.GetComponent<Player>())
+            {
+                hit.collider.GetComponent<OnHealth>().OnTakeDamage(weaponDamage);
+            }
+>>>>>>> parent of f525f6c... Worked on adding game win-lose condition, added enemy death parameters.
         }
     }
 }

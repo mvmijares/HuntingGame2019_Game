@@ -72,11 +72,18 @@ public class Weapon : MonoBehaviour
         //TODO : Rework a more efficient way of handling physics detection
         if (Physics.Raycast(firePoint.position, direction, out hit, fireDistance))
         {
-            Debug.Log("We hit " + hit.collider.gameObject);
-            if (hit.collider.GetComponent<OnHealth>() && !hit.collider.GetComponent<Player>())
-            {
-                hit.collider.GetComponent<OnHealth>().OnTakeDamage(weaponDamage);
-            }
+            CheckWeaponCollision(hit);
+        }
+    }
+    private void CheckWeaponCollision(RaycastHit hit)
+    {
+        if(hit.collider.gameObject.layer == LayerMask.NameToLayer("Ground"))
+        {
+            //Spawn ground prefab 
+        }
+        if (hit.collider.GetComponent<OnHealth>() && !hit.collider.GetComponent<Player>())
+        {
+            hit.collider.GetComponent<OnHealth>().OnTakeDamage(weaponDamage);
         }
     }
 }

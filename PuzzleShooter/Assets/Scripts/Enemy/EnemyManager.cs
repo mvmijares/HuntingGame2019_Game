@@ -12,8 +12,18 @@ public class EnemyManager : MonoBehaviour
     List<Enemy> enemyList;
     GameManager _gameManager;
     public GameObject enemyPrefab;
+    public float spawnHeightOffset = 0.15f;
+
     private bool groundCheck = false;
     private int groundMask;
+    private bool _destroyEnemies;
+    public bool destroyEnemies
+    {
+        get
+        {
+            return _destroyEnemies;
+        }
+    }
     /// <summary>
     /// Initialization our our manager class
     /// </summary>
@@ -23,6 +33,14 @@ public class EnemyManager : MonoBehaviour
         _gameManager = manager;
         enemyList = new List<Enemy>();
         groundMask = 1 << LayerMask.NameToLayer("Ground");
+        _destroyEnemies = false;
+    }
+    private void Update()
+    {
+        if(_destroyEnemies && enemyList.Count == 0)
+        {
+            _destroyEnemies = false;
+        }
     }
     /// <summary>
     /// Create a new enemy during run-time
@@ -34,44 +52,60 @@ public class EnemyManager : MonoBehaviour
         enemyList.Add(newEnemy);
     }
     /// <summary>
-    /// Delete an Enemy from our list
+    /// Delete an Enemy from our list. Remove all references to object before deletion.
     /// </summary>
     /// <param name="target"></param>
     public void DeleteEnemy(Enemy target)
     {
-        if(enemyList.Contains(target))
+        if (enemyList.Contains(target))
+        {
             enemyList.Remove(target);
+            Destroy(target.gameObject);
+        }
+        _gameManager.EnemyWasKilled();
     }
-
+    /// <summary>
+    /// Deletes all enemies 
+    /// TODO : Make a better enemy deletion system.
+    /// Process currently points to the enemy, then points back to itself
+    /// </summary>
+    public void DeleteAllEnemies()
+    {
+        _destroyEnemies = true;
+    }
     private Vector3 GetSpawnPosition()
     {
         Vector3 newPosition = Vector3.zero;
         Vector3 tempOfPosition = Vector3.zero;
         float hieght = 1f;
-        float offset = 0.1f;
 
         newPosition = Random.insideUnitSphere * spawnZoneRadius + spawnZoneCenter.position;
         tempOfPosition = new Vector3(newPosition.x, raycastHeight, newPosition.y);
 
         RaycastHit hit;
-        Debug.DrawRay(tempOfPosition, Vector3.down * raycastDistance, Color.blue);
-        if (Physics.Raycast(tempOfPosition, Vector3.down, out hit, raycastDistance, groundMask))
+
+        do
         {
-            groundCheck = true;
-            hieght = hit.point.y + offset;
-        }
-        else
-        {
-            groundCheck = false;
-        }
+            if (Physics.Raycast(tempOfPosition, Vector3.down, out hit, raycastDistance, groundMask))
+            {
+                groundCheck = true;
+                hieght = hit.point.y + spawnHeightOffset;
+            }
+            else
+            {
+                groundCheck = false;
+            }
+        } while (!groundCheck);
+
         newPosition = new Vector3(newPosition.x, hieght, newPosition.z);
         return newPosition;
     }
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         if(spawnZoneCenter)
             Gizmos.DrawWireSphere(spawnZoneCenter.position, spawnZoneRadius);
-        
+
     }
 }

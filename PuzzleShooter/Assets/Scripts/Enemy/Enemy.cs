@@ -97,29 +97,34 @@ public class Enemy : MonoBehaviour
     private void Update()
     {
         bool dead = healthComponent.isDead;
-        if (!dead)
+        bool destructionCall = _enemyManager.destroyEnemies;
+
+        if (!dead && !destructionCall)
         {
             AISolver();
             ApplyMovement();
         }
         else
         {
-            OnDeath();
+            HandleDeathSequence(destructionCall);
         }
-
+    }
+    public void HandleDeathSequence(bool destructionCall)
+    {
+        PlayDeathAnimation();
+        if(!destructionCall)
+            _enemyManager.DeleteEnemy(this);
     }
     /// <summary>
     /// Handles death functionality for enemy.
     /// TODO : Make a interface for death animation calls
     /// </summary>
-    private void OnDeath()
+    private void PlayDeathAnimation()
     {
         if (!isDeathAnimPlaying)
         {
             GameObject clone = Instantiate(deathEffectPrefab, transform.position, deathEffectPrefab.transform.rotation) as GameObject;
-            model.SetActive(false);
-            col.enabled = false;
-            isDeathAnimPlaying = !isDeathAnimPlaying;
+            isDeathAnimPlaying = true;
         }
     }
 
@@ -182,6 +187,7 @@ public class Enemy : MonoBehaviour
             moveDirection = new Vector3(moveDirection.x, 0, moveDirection.z);
             DistanceCheck();
         }
+        anim.SetFloat("Speed", 0.5f);
     }
 
     private float GetHeightPosition(Vector3 randomPoint)

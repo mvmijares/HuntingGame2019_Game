@@ -7,8 +7,11 @@ public class Weapon : MonoBehaviour
     public int weaponDamage;
     public float fireRate;
     public float maxAmmo;
-    public float clip;
+    private int _clip;
+    public int clip { get { return _clip; } }
+    public void SetClipSize(int size) { _clip = size; }
 
+    private bool reload;
     private Player _player;
 
     //Information stored in player class
@@ -38,6 +41,7 @@ public class Weapon : MonoBehaviour
     private void Update()
     {
         HandleWeaponFire();
+        
     }
     /// <summary>
     /// Method to handle weapon fire logic
@@ -69,6 +73,7 @@ public class Weapon : MonoBehaviour
     {
         Fire();
         yield return new WaitForSeconds(fireRate);
+        reload = true;
         isCoroutinePlaying = false;
     }
     /// <summary>
@@ -77,8 +82,10 @@ public class Weapon : MonoBehaviour
     private void Fire()
     {
         if (!_player) return;
+        if(_clip > 0)
+            _clip--;
+    
         RaycastHit hit;
-
         if (Physics.Raycast(firePointOrigin,_player.cameraController.transform.forward, out hit, fireDistance))
         {
             CheckWeaponCollision(hit);

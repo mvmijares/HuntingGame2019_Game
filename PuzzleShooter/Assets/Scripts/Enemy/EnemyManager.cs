@@ -33,6 +33,7 @@ public class EnemyManager : MonoBehaviour
     {
         Enemy newEnemy = Instantiate(enemyPrefab, GetSpawnPosition(), enemyPrefab.transform.rotation).GetComponent<Enemy>();
         newEnemy.Initialize(this);
+        newEnemy.SetInitialHealth(_gameManager.enemyHealthSize);
         enemyList.Add(newEnemy);
     }
     /// <summary>
@@ -48,6 +49,7 @@ public class EnemyManager : MonoBehaviour
         }
         _gameManager.EnemyWasKilled();
     }
+    
     /// <summary>
     /// Deletes all enemies 
     /// TODO : Make a better enemy deletion system.

@@ -58,13 +58,13 @@ public class Enemy : MonoBehaviour
     public void Initialize(EnemyManager manager)
     {
         _enemyManager = manager;
-        anim = GetComponentInChildren<Animator>();
-        if (anim)
-            model = anim.gameObject; // assuming our model has a animator attached to it.
-
         col = GetComponent<CapsuleCollider>();
         healthComponent = GetComponent<OnHealth>();
 
+        anim = GetComponentInChildren<Animator>();
+        if (anim)
+            model = anim.gameObject; // assuming our model has a animator attached to it.
+        
         state = AIState.Idle;
         spawnPoint = transform.position;
         target.set = false;
@@ -72,6 +72,12 @@ public class Enemy : MonoBehaviour
         deathEffectPrefab = Resources.Load("EnemyDeath_Prefab") as GameObject;
         type = EnemyType.Chicken; // Prototyping purposes
         SetupEnemy();
+    }
+
+    public void SetInitialHealth(int size)
+    {
+        if (healthComponent)
+            healthComponent.health = size;
     }
     /// <summary>
     /// Setup a definition for our enemy type.

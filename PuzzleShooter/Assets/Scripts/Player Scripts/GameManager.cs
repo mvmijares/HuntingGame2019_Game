@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour
 
     private bool initRound; // Handles round initialization
     private bool roundStart;
-    private float startTimer = 0.0f;
+    [SerializeField] private float startTimer = 0.0f;
     public float startTime;
     //in case the user takes too long
     [SerializeField] private float currRoundTime = 0.0f;
@@ -76,7 +76,23 @@ public class GameManager : MonoBehaviour
     {
         ProcessGameTasks();
         _player.CustomUpdate();
+
+        GameDebugMethod();
     }
+    /// <summary>
+    /// Method to handle debugging gameplay
+    /// </summary>
+    private void GameDebugMethod()
+    {
+        if (Input.GetKey(KeyCode.U))
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                EnemyWasKilled();
+            }
+        }
+    }
+
     private void LateUpdate()
     {
         _player.CustomLateUpdate();
@@ -116,7 +132,7 @@ public class GameManager : MonoBehaviour
         {
             checkRoundStatus = true;
             enemyStatusBar.ResetStatusBar();
-        }else if (numOfEnemies == killedEnemies)
+        }else if (killedEnemies >= numOfEnemies)
         {
             checkRoundStatus = true;
             roundNum++;
@@ -135,11 +151,11 @@ public class GameManager : MonoBehaviour
                 isSpawnRunning = false;
                 StopCoroutine(SpawnEnemyCoroutine());
             }
+            _eManager.DeleteAllEnemies();
             start = false;
+            checkRoundStatus = false;
             currRoundTime = 0.0f;
             killedEnemies = 0;
-
-            _eManager.DeleteAllEnemies();
             CalculateScore();
         }
     }

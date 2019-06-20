@@ -591,6 +591,11 @@ PrefabInstance:
       propertyPath: prototype
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7808604327284515121, guid: 5fe716352850f85499d9d5d6025d5eed,
+        type: 3}
+      propertyPath: numOfEnemies
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5fe716352850f85499d9d5d6025d5eed, type: 3}
 --- !u!1001 &307547058
@@ -1237,6 +1242,8 @@ MonoBehaviour:
   enemySprite: {fileID: 21300000, guid: 500715d4aabbf0d47bcd8ed6f094dacf, type: 3}
   imageSize: {x: 100, y: 100}
   offset: {x: 5, y: 0}
+  imageObjects: []
+  lastIndex: 0
 --- !u!1 &644931060
 GameObject:
   m_ObjectHideFlags: 0
@@ -3901,6 +3908,7 @@ MonoBehaviour:
   spawnZoneCenter: {fileID: 1577685546}
   spawnZoneRadius: 30
   raycastDistance: 10
+  enemyList: []
   enemyPrefab: {fileID: 4801344800499007982, guid: b667c1a4bfc6d8e4cb79d9a824c9a54f,
     type: 3}
   spawnHeightOffset: 0.15

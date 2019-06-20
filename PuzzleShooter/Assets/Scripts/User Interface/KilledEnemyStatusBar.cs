@@ -38,7 +38,7 @@ public class KilledEnemyStatusBar : MonoBehaviour
     /// </summary>
     public void ResetStatusBar()
     {
-        lastIndex = _gameManager.numOfEnemies;
+        lastIndex = _gameManager.numOfEnemies - 1;
         for(int i = 0; i < _gameManager.numOfEnemies; i++)
         {
             imageObjects[i].SetActive(true);
@@ -49,7 +49,7 @@ public class KilledEnemyStatusBar : MonoBehaviour
     /// </summary>
     public void EnemyWasKilled()
     {
-        if (lastIndex > -1) //Also called when we destroy every enemy at end of each round
+        if (lastIndex >= 0) //Also called when we destroy every enemy at end of each round
         {
             imageObjects[lastIndex].SetActive(false);
             lastIndex--;

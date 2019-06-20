@@ -97,23 +97,25 @@ public class Enemy : MonoBehaviour
     private void Update()
     {
         bool dead = healthComponent.isDead;
-        bool destructionCall = _enemyManager.destroyEnemies;
 
-        if (!dead && !destructionCall)
+        if (!dead)
         {
             AISolver();
             ApplyMovement();
         }
         else
         {
-            HandleDeathSequence(destructionCall);
+            PlayDeathAnimation();
+            _enemyManager.DeleteEnemy(this); // TODO : Make a better way to handle enemy deletion
         }
     }
-    public void HandleDeathSequence(bool destructionCall)
+    /// <summary>
+    /// Public method for enemy manager to call destruction.
+    /// Used for destroying all enemies in list
+    /// </summary>
+    public void EnemyDestructionCall()
     {
         PlayDeathAnimation();
-        if(!destructionCall)
-            _enemyManager.DeleteEnemy(this);
     }
     /// <summary>
     /// Handles death functionality for enemy.

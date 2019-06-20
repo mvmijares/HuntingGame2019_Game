@@ -9,21 +9,13 @@ public class EnemyManager : MonoBehaviour
     //Raycast from y height to ground to get height position for spawning object
     private float raycastHeight = 10f;
     public float raycastDistance = 15f;
-    List<Enemy> enemyList;
+    [SerializeField] List<Enemy> enemyList;
     GameManager _gameManager;
     public GameObject enemyPrefab;
     public float spawnHeightOffset = 0.15f;
 
     private bool groundCheck = false;
     private int groundMask;
-    private bool _destroyEnemies;
-    public bool destroyEnemies
-    {
-        get
-        {
-            return _destroyEnemies;
-        }
-    }
     /// <summary>
     /// Initialization our our manager class
     /// </summary>
@@ -33,14 +25,6 @@ public class EnemyManager : MonoBehaviour
         _gameManager = manager;
         enemyList = new List<Enemy>();
         groundMask = 1 << LayerMask.NameToLayer("Ground");
-        _destroyEnemies = false;
-    }
-    private void Update()
-    {
-        if(_destroyEnemies && enemyList.Count == 0)
-        {
-            _destroyEnemies = false;
-        }
     }
     /// <summary>
     /// Create a new enemy during run-time
@@ -71,8 +55,14 @@ public class EnemyManager : MonoBehaviour
     /// </summary>
     public void DeleteAllEnemies()
     {
-        _destroyEnemies = true;
+        foreach(Enemy e in enemyList)
+        {
+            e.EnemyDestructionCall();
+            Destroy(e.gameObject);
+        }
+        enemyList.Clear();
     }
+
     private Vector3 GetSpawnPosition()
     {
         Vector3 newPosition = Vector3.zero;

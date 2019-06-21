@@ -6,10 +6,10 @@ public class Weapon : MonoBehaviour
 {
     public int weaponDamage;
     public float fireRate;
-    public float maxAmmo;
+    private int _maxClipSize;
     private int _clip;
     public int clip { get { return _clip; } }
-    public void SetClipSize(int size) { _clip = size; }
+
 
     private bool reload;
     private Player _player;
@@ -41,7 +41,11 @@ public class Weapon : MonoBehaviour
     private void Update()
     {
         HandleWeaponFire();
-        
+    }
+
+    public void SetClipSize(int size)
+    {
+        _clip = size;
     }
     /// <summary>
     /// Method to handle weapon fire logic
@@ -82,13 +86,19 @@ public class Weapon : MonoBehaviour
     private void Fire()
     {
         if (!_player) return;
-        if(_clip > 0)
-            _clip--;
-    
-        RaycastHit hit;
-        if (Physics.Raycast(firePointOrigin,_player.cameraController.transform.forward, out hit, fireDistance))
+        if (_clip > 0)
         {
-            CheckWeaponCollision(hit);
+            _clip--;
+            RaycastHit hit;
+            if (Physics.Raycast(firePointOrigin, _player.cameraController.transform.forward, out hit, fireDistance))
+            {
+                CheckWeaponCollision(hit);
+            }
+        }
+        else
+        {
+            _clip = 0;
+            _player.GetGameManager().PlayerEmptyAmmoClip(); // TODO L Make an event for this
         }
     }
     /// <summary>

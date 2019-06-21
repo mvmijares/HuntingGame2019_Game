@@ -34,19 +34,22 @@ public class GameManager : MonoBehaviour
     public AmmoStatusBar ammoStatusBar { get { return _ammoStatusBar; } }
     [SerializeField] RoundStatusBar _roundStatusBar;
     public RoundStatusBar roundStatusBar { get { return _roundStatusBar; } }
-    //Testing Purposes
+    [SerializeField] TimerStatusBar _timerStatusBar;
+    public TimerStatusBar timerStatusBar { get { return _timerStatusBar; } }
 
     private int _roundNum;
     public int roundNum { get { return _roundNum; } }
 
     private bool pass; // if user passes to next round.
+    
 
-    private bool initRound; // Handles round initialization
-    private bool roundStart;
     [SerializeField] private float startTimer = 0.0f;
     public float startTime;
-    //in case the user takes too long
+
     [SerializeField] private float currRoundTime = 0.0f;
+    public float GetRoundTime() {
+        return roundTime - currRoundTime;
+    } // returns round time
     public float roundTime = 60.0f;
 
     [Tooltip("Clip size for your weapon.")]
@@ -61,9 +64,11 @@ public class GameManager : MonoBehaviour
     private int killedEnemies; //Enemies that were killed
     public int numOfEnemies; //Enemies that you need to kill
     public int enemyHealthSize;
+
+    private bool emptyClip;
     private void Awake()
     {
-        initRound = false;
+        emptyClip = false;
         numOfEnemies = 10; // Prototype variable
 
         _player = FindObjectOfType<Player>();
@@ -75,7 +80,7 @@ public class GameManager : MonoBehaviour
             _eManager.Initialize(this);
 
         InitializeUserInterface();
-        _player.weapon.SetClipSize(weaponClipSize);
+
     }
     /// <summary>
     /// Intiialization for User Interface scripts
@@ -93,6 +98,10 @@ public class GameManager : MonoBehaviour
         _roundStatusBar = FindObjectOfType<RoundStatusBar>();
         if (_roundStatusBar)
             _roundStatusBar.InitializeStatusBar(this);
+
+        _timerStatusBar = FindObjectOfType<TimerStatusBar>();
+        if (_timerStatusBar)
+            _timerStatusBar.InitializeStatusBar(this);
     }
 
     //Methods to handle order of execution for Update / LateUpdate
@@ -132,7 +141,9 @@ public class GameManager : MonoBehaviour
             if (startTimer >= startTime)
             {
                 startTimer = 0.0f;
+                _player.weapon.SetClipSize(weaponClipSize);
                 start = true;
+
             }
         }
         else
@@ -156,7 +167,7 @@ public class GameManager : MonoBehaviour
         {
             checkRoundStatus = true;
             enemyStatusBar.ResetStatusBar();
-        } else if (_player.weapon.clip <= 0)
+        } else if (emptyClip)
         {
             checkRoundStatus = true;
             enemyStatusBar.ResetStatusBar();
@@ -174,18 +185,27 @@ public class GameManager : MonoBehaviour
     {
         if (checkRoundStatus)
         {
-            if (isSpawnRunning)
-            {
-                isSpawnRunning = false;
-                StopCoroutine(SpawnEnemyCoroutine());
-            }
+            StopCoroutine(SpawnEnemyCoroutine());
+            _player.weapon.SetClipSize(0);
             _eManager.DeleteAllEnemies();
+
             start = false;
             checkRoundStatus = false;
+            emptyClip = false;
+            isSpawnRunning = false;
             currRoundTime = 0.0f;
             killedEnemies = 0;
             CalculateScore();
         }
+    }
+    /// <summary>
+    /// Method for checking if the player is empty.
+    /// Should be handled in an event.
+    /// </summary>
+    public void PlayerEmptyAmmoClip()
+    {
+        if(start) // check if the round is started first
+            emptyClip = true;
     }
     /// <summary>
     /// Function to spawn enemies.

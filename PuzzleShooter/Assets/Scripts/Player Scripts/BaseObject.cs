@@ -12,7 +12,7 @@ using UnityEngine;
 public class BaseObject : MonoBehaviour
 {
     GameManager _gameManager;
-
+    public GameManager GetGameManager() { return _gameManager; }
     /// <summary>
     /// BaseObject custom initialization function
     /// </summary>

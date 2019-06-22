@@ -11,7 +11,7 @@ public class EnemyManager : MonoBehaviour
     public float raycastDistance = 15f;
     [SerializeField] List<Enemy> enemyList;
     GameManager _gameManager;
-    public GameObject enemyPrefab;
+    public List<GameObject> enemyPrefabs;
     public float spawnHeightOffset = 0.15f;
 
     private bool groundCheck = false;
@@ -31,7 +31,10 @@ public class EnemyManager : MonoBehaviour
     /// </summary>
     public void CreateNewEnemy()
     {
-        Enemy newEnemy = Instantiate(enemyPrefab, GetSpawnPosition(), enemyPrefab.transform.rotation).GetComponent<Enemy>();
+        int choice = 0;
+        choice = Random.Range(0, enemyPrefabs.Count - 1 );
+
+        Enemy newEnemy = Instantiate(enemyPrefabs[choice], GetSpawnPosition(), enemyPrefabs[choice].transform.rotation).GetComponent<Enemy>();
         newEnemy.Initialize(this);
         newEnemy.SetInitialHealth(_gameManager.enemyHealthSize);
         enemyList.Add(newEnemy);

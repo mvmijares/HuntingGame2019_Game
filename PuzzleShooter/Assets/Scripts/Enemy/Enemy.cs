@@ -10,7 +10,7 @@ public enum AIState
 };
 public enum EnemyType
 {
-    Chicken
+    Chicken, Rooster, Goat, Pig
 }
 struct EnemyTarget
 {
@@ -24,15 +24,22 @@ struct EnemyTarget
         position = Vector3.zero;
     }
 };
-
+/// <summary>
+/// TODO : Make Enemy an base class and derive seperate Enemy types
+/// - Enemy Prefabs have different sizes and require different collision detection methods
+/// 
+/// </summary>
 public class Enemy : MonoBehaviour
 {
     //TODO : make a seperate class for enemy AI solving
     public enum AIState { Walk, Run, Idle}
     [SerializeField] AIState state;
-    EnemyType type;
+    public EnemyType type;
     private EnemyManager _enemyManager;
+    private Player player;
     private CapsuleCollider col;
+    Rigidbody rigidbody;
+
     private OnHealth healthComponent;
     private GameObject model;
     private float idleTime;
@@ -44,11 +51,15 @@ public class Enemy : MonoBehaviour
     private GameObject deathEffectPrefab;
     private bool isDeathAnimPlaying = false;
 
+    private bool isGrounded;
+    private Vector3 feetPosition; //Feet position 
+    public float groundCheckDistance; // Raycast distance for checking ground
     public float moveSpeed;
     public float turnSpeed;
     public Vector2 idleTimeMinMax;
     public float walkRadius;
     public float remainingDistance;
+    public float detectionRadius;
     /// <summary>
     /// Constructor for Enemy
     /// </summary>
@@ -59,6 +70,7 @@ public class Enemy : MonoBehaviour
     {
         _enemyManager = manager;
         col = GetComponent<CapsuleCollider>();
+        rigidbody = GetComponent<Rigidbody>();
         healthComponent = GetComponent<OnHealth>();
 
         anim = GetComponentInChildren<Animator>();
@@ -70,8 +82,11 @@ public class Enemy : MonoBehaviour
         target.set = false;
         target.position = Vector3.zero;
         deathEffectPrefab = Resources.Load("EnemyDeath_Prefab") as GameObject;
-        type = EnemyType.Chicken; // Prototyping purposes
         SetupEnemy();
+        player = null;
+        detectionRadius = 3.0f;
+        isGrounded = false;
+        groundCheckDistance = 1f;
     }
 
     public void SetInitialHealth(int size)
@@ -82,6 +97,7 @@ public class Enemy : MonoBehaviour
     /// <summary>
     /// Setup a definition for our enemy type.
     /// TODO : Create a enemy type class and use inheritence
+    /// TODO : Create different values for each enemy type
     /// </summary>
     private void SetupEnemy()
     {
@@ -90,6 +106,27 @@ public class Enemy : MonoBehaviour
             case EnemyType.Chicken:
                 {
                     //Should be setup in Enemy Factor
+                    idleTimeMinMax = new Vector2(3, 5f);
+                    walkRadius = 5f;
+                    remainingDistance = 1f;
+                    break;
+                }
+            case EnemyType.Goat:
+                {
+                    idleTimeMinMax = new Vector2(3, 5f);
+                    walkRadius = 5f;
+                    remainingDistance = 1f;
+                    break;
+                }
+            case EnemyType.Pig:
+                {
+                    idleTimeMinMax = new Vector2(3, 5f);
+                    walkRadius = 5f;
+                    remainingDistance = 1f;
+                    break;
+                }
+            case EnemyType.Rooster:
+                {
                     idleTimeMinMax = new Vector2(3, 5f);
                     walkRadius = 5f;
                     remainingDistance = 1f;
@@ -106,6 +143,7 @@ public class Enemy : MonoBehaviour
 
         if (!dead)
         {
+            PlayerDetection();
             AISolver();
             ApplyMovement();
         }
@@ -115,6 +153,25 @@ public class Enemy : MonoBehaviour
             _enemyManager.DeleteEnemy(this); // TODO : Make a better way to handle enemy deletion
         }
     }
+
+    private void PlayerDetection()
+    {
+        if (state != AIState.Run)
+        {
+            Collider[] colliders = Physics.OverlapSphere(transform.position, detectionRadius);
+            int i = 0;
+            while (i < colliders.Length)
+            {
+                if (colliders[i].gameObject.layer == LayerMask.NameToLayer("Player"))
+                {
+                    state = AIState.Run;
+                    player = colliders[i].GetComponent<Player>();
+                }
+                i++;
+            }
+        }
+    }
+
     /// <summary>
     /// Public method for enemy manager to call destruction.
     /// Used for destroying all enemies in list
@@ -153,6 +210,11 @@ public class Enemy : MonoBehaviour
                     HandleWalkState();
                     break;
                 }
+            case AIState.Run:
+                {
+                    HandleRunState();
+                    break;
+                }
         }
     }
     /// <summary>
@@ -174,7 +236,8 @@ public class Enemy : MonoBehaviour
         anim.SetFloat("Speed", 0f);
     }
     /// <summary>
-    /// Method to handle walking state
+    /// Method to handle enemy in a neutral state.
+    /// Enemy is roaming and does not detect the player
     /// </summary>
     private void HandleWalkState()
     {
@@ -197,7 +260,31 @@ public class Enemy : MonoBehaviour
         }
         anim.SetFloat("Speed", 0.5f);
     }
+    /// <summary>
+    /// Method to handle enemy in scared state.
+    /// Enemy is running away from player and will hide after x amount of time
+    /// </summary>
+    private void HandleRunState()
+    {
+        if (player != null)
+        {
+            Vector3 direction = (player.transform.position - transform.position).normalized;
+            moveDirection = Vector3.Reflect(direction, direction);
+            
+            moveSpeed = 5f;
+            turnSpeed = 5f;
 
+            if (GroundCheck())
+            {
+                rigidbody.AddForce(Vector3.up * 30.0f);
+                anim.SetFloat("Speed", 1f);
+            }
+            else
+            {
+                anim.SetFloat("Speed", 0f);
+            }
+        }
+    }
     private float GetHeightPosition(Vector3 randomPoint)
     {
         Vector3 heightPoint = new Vector3(randomPoint.x, 10, randomPoint.z);
@@ -232,19 +319,31 @@ public class Enemy : MonoBehaviour
         }
     }
     /// <summary>
+    /// Raycasts downwards to check if the object is on the ground
+    /// </summary>
+    /// <returns></returns>
+    private bool GroundCheck()
+    {
+        bool check = false;
+        int groundMask = 1 << LayerMask.NameToLayer("Ground");
+        feetPosition = transform.position + col.center + (Vector3.down * col.radius);
+        if (Physics.Raycast(feetPosition, Vector3.down, groundCheckDistance, groundMask))
+        {
+            check = true;
+        }
+        return check;
+    }
+    /// <summary>
     /// Method to handle rotation and movement for our enemy
     /// </summary>
     private void ApplyMovement()
     {
-        if (target.set)
+        if (moveDirection != Vector3.zero)
         {
-            if (moveDirection != Vector3.zero)
-            {
-                Quaternion newRotation = Quaternion.LookRotation(moveDirection, Vector3.up);
-                transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, Time.deltaTime * turnSpeed);
-            }
-            transform.position += transform.forward * Time.deltaTime * moveSpeed;
+            Quaternion newRotation = Quaternion.LookRotation(moveDirection, Vector3.up);
+            transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, Time.deltaTime * turnSpeed);
         }
+        transform.position += transform.forward * Time.deltaTime * moveSpeed;
     }
     /// <summary>
     /// Debug Draw calls for behind the scenes logic

@@ -176,7 +176,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &72496860
 PrefabInstance:
@@ -1198,7 +1198,7 @@ Transform:
   m_Children:
   - {fileID: 1523467923}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &508149160 stripped
 Transform:
@@ -1568,7 +1568,7 @@ RectTransform:
   - {fileID: 614272070}
   - {fileID: 1021810621}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -2117,7 +2117,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1001 &1111009384
 PrefabInstance:
@@ -3616,7 +3616,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1596583653 stripped
 Transform:
@@ -4428,7 +4428,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1851516024
 MonoBehaviour:
@@ -4446,8 +4446,11 @@ MonoBehaviour:
   spawnZoneRadius: 30
   raycastDistance: 10
   enemyList: []
-  enemyPrefab: {fileID: 4801344800499007982, guid: b667c1a4bfc6d8e4cb79d9a824c9a54f,
-    type: 3}
+  enemyPrefabs:
+  - {fileID: 4801344800499007982, guid: b667c1a4bfc6d8e4cb79d9a824c9a54f, type: 3}
+  - {fileID: 8713889848784918232, guid: 4084b3c75bcf0b245a81a0f80978e2e8, type: 3}
+  - {fileID: 4722069505716552669, guid: 624a508d5dbaf8d4093145663d2c7f9e, type: 3}
+  - {fileID: 3846626264856698596, guid: a2f7980b6fce20842a5df05dcfbfc468, type: 3}
   spawnHeightOffset: 0.15
 --- !u!1001 &1899598219
 PrefabInstance:
@@ -5619,7 +5622,7 @@ Transform:
   - {fileID: 1768725443}
   - {fileID: 4106110175861172486}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!136 &3425494075276979155
 CapsuleCollider:
@@ -5649,7 +5652,7 @@ GameObject:
   - component: {fileID: 4106110177082439579}
   - component: {fileID: 4106110177082439576}
   - component: {fileID: 612032042}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}

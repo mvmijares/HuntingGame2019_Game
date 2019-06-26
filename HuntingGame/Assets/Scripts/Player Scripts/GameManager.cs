@@ -70,6 +70,7 @@ public class GameManager : MonoBehaviour
     {
         emptyClip = false;
         numOfEnemies = 10; // Prototype variable
+        isSpawnRunning = false;
 
         _player = FindObjectOfType<Player>();
         if (_player)
@@ -110,7 +111,7 @@ public class GameManager : MonoBehaviour
         ProcessGameTasks();
         _player.CustomUpdate();
 
-        GameDebugMethod();
+        //GameDebugMethod();
     }
     /// <summary>
     /// Method to handle debugging gameplay
@@ -143,7 +144,6 @@ public class GameManager : MonoBehaviour
                 startTimer = 0.0f;
                 _player.weapon.SetClipSize(weaponClipSize);
                 start = true;
-
             }
         }
         else

@@ -78,6 +78,7 @@ public class Enemy : MonoBehaviour
             model = anim.gameObject; // assuming our model has a animator attached to it.
         
         state = AIState.Idle;
+        idleTime = UnityEngine.Random.Range(idleTimeMinMax.x, idleTimeMinMax.y);
         spawnPoint = transform.position;
         target.set = false;
         target.position = Vector3.zero;
@@ -88,7 +89,23 @@ public class Enemy : MonoBehaviour
         isGrounded = false;
         groundCheckDistance = 1f;
     }
+    //Enemy doesn't require a custom update
+    private void Update()
+    {
+        bool dead = healthComponent.isDead;
 
+        if (!dead)
+        {
+            PlayerDetection();
+            AISolver();
+            ApplyMovement();
+        }
+        else
+        {
+            PlayDeathAnimation();
+            _enemyManager.DeleteEnemy(this); // TODO : Make a better way to handle enemy deletion
+        }
+    }
     public void SetInitialHealth(int size)
     {
         if (healthComponent)
@@ -136,24 +153,6 @@ public class Enemy : MonoBehaviour
 
         idleTime = UnityEngine.Random.Range(idleTimeMinMax.x, idleTimeMinMax.y);
     }
-    //Enemy doesn't require a custom update
-    private void Update()
-    {
-        bool dead = healthComponent.isDead;
-
-        if (!dead)
-        {
-            PlayerDetection();
-            AISolver();
-            ApplyMovement();
-        }
-        else
-        {
-            PlayDeathAnimation();
-            _enemyManager.DeleteEnemy(this); // TODO : Make a better way to handle enemy deletion
-        }
-    }
-
     private void PlayerDetection()
     {
         if (state != AIState.Run)
@@ -172,14 +171,6 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Public method for enemy manager to call destruction.
-    /// Used for destroying all enemies in list
-    /// </summary>
-    public void EnemyDestructionCall()
-    {
-        PlayDeathAnimation();
-    }
     /// <summary>
     /// Handles death functionality for enemy.
     /// TODO : Make a interface for death animation calls
@@ -222,10 +213,7 @@ public class Enemy : MonoBehaviour
     /// </summary>
     private void HandleIdleState()
     {
-        if(idleTime == 0)
-        {
-            idleTime = UnityEngine.Random.Range(idleTimeMinMax.x, idleTimeMinMax.y);
-        }
+
         currIdleTime += Time.deltaTime;
         if(currIdleTime > idleTime)
         {
@@ -269,20 +257,12 @@ public class Enemy : MonoBehaviour
         if (player != null)
         {
             Vector3 direction = (player.transform.position - transform.position).normalized;
+
             moveDirection = Vector3.Reflect(direction, direction);
-            
+
             moveSpeed = 5f;
             turnSpeed = 5f;
 
-            if (GroundCheck())
-            {
-                rigidbody.AddForce(Vector3.up * 30.0f);
-                anim.SetFloat("Speed", 1f);
-            }
-            else
-            {
-                anim.SetFloat("Speed", 0f);
-            }
         }
     }
     private float GetHeightPosition(Vector3 randomPoint)
@@ -346,6 +326,14 @@ public class Enemy : MonoBehaviour
         transform.position += transform.forward * Time.deltaTime * moveSpeed;
     }
     /// <summary>
+    /// Public method for enemy manager to call destruction.
+    /// Used for destroying all enemies in list
+    /// </summary>
+    public void EnemyDestructionCall()
+    {
+        PlayDeathAnimation();
+    }
+    /// <summary>
     /// Debug Draw calls for behind the scenes logic
     /// </summary>
     private void OnDrawGizmos()
@@ -356,5 +344,5 @@ public class Enemy : MonoBehaviour
             Gizmos.DrawWireCube(target.position, Vector3.one);
         }
     }
-
+   
 }

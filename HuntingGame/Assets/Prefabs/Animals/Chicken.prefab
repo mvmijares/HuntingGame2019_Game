@@ -47,12 +47,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2eac2ee3cce3f5443af60bb62bcbe4e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  state: 0
+  state: 2
+  type: 0
+  idleTime: 0
+  groundCheckDistance: 0
   moveSpeed: 2
   turnSpeed: 2
   idleTimeMinMax: {x: 3, y: 5}
   walkRadius: 5
   remainingDistance: 1
+  detectionRadius: 0
 --- !u!54 &4801344800499007978
 Rigidbody:
   m_ObjectHideFlags: 0

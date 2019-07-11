@@ -16,6 +16,7 @@ public class EnemyManager : MonoBehaviour
 
     private bool groundCheck = false;
     private int groundMask;
+
     /// <summary>
     /// Initialization our our manager class
     /// </summary>
@@ -35,8 +36,7 @@ public class EnemyManager : MonoBehaviour
         choice = Random.Range(0, enemyPrefabs.Count - 1 );
 
         Enemy newEnemy = Instantiate(enemyPrefabs[choice], GetSpawnPosition(), enemyPrefabs[choice].transform.rotation).GetComponent<Enemy>();
-        newEnemy.Initialize(this);
-        newEnemy.SetInitialHealth(_gameManager.enemyHealthSize);
+        newEnemy.Initialize(this, _gameManager.enemyHealthSize);
         enemyList.Add(newEnemy);
     }
     /// <summary>
@@ -50,7 +50,7 @@ public class EnemyManager : MonoBehaviour
             enemyList.Remove(target);
             Destroy(target.gameObject);
         }
-        _gameManager.EnemyWasKilled();
+        _gameManager.EnemyWasKilled(target);
     }
     
     /// <summary>
@@ -103,4 +103,6 @@ public class EnemyManager : MonoBehaviour
             Gizmos.DrawWireSphere(spawnZoneCenter.position, spawnZoneRadius);
 
     }
+
+ 
 }

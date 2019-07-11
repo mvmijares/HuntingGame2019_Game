@@ -42,7 +42,7 @@ public class Enemy : MonoBehaviour
 
     private OnHealth healthComponent;
     private GameObject model;
-    private float idleTime;
+    [SerializeField] private float idleTime;
     private float currIdleTime;
     private EnemyTarget target;
     private Animator anim;
@@ -66,50 +66,27 @@ public class Enemy : MonoBehaviour
     /// <param name="manager">Reference to Enemy Manager class</param>
     /// <param name="name">Name of enemy.</param>
     /// <param name="position">World position for game object.</param>
-    public void Initialize(EnemyManager manager)
+    public void Initialize(EnemyManager manager, int health)
     {
         _enemyManager = manager;
         col = GetComponent<CapsuleCollider>();
         rigidbody = GetComponent<Rigidbody>();
         healthComponent = GetComponent<OnHealth>();
-
         anim = GetComponentInChildren<Animator>();
         if (anim)
             model = anim.gameObject; // assuming our model has a animator attached to it.
-        
+
         state = AIState.Idle;
-        idleTime = UnityEngine.Random.Range(idleTimeMinMax.x, idleTimeMinMax.y);
+        SetupEnemy();
+        currIdleTime = 0.0f;
         spawnPoint = transform.position;
         target.set = false;
         target.position = Vector3.zero;
         deathEffectPrefab = Resources.Load("EnemyDeath_Prefab") as GameObject;
-        SetupEnemy();
         player = null;
         detectionRadius = 3.0f;
         isGrounded = false;
         groundCheckDistance = 1f;
-    }
-    //Enemy doesn't require a custom update
-    private void Update()
-    {
-        bool dead = healthComponent.isDead;
-
-        if (!dead)
-        {
-            PlayerDetection();
-            AISolver();
-            ApplyMovement();
-        }
-        else
-        {
-            PlayDeathAnimation();
-            _enemyManager.DeleteEnemy(this); // TODO : Make a better way to handle enemy deletion
-        }
-    }
-    public void SetInitialHealth(int size)
-    {
-        if (healthComponent)
-            healthComponent.health = size;
     }
     /// <summary>
     /// Setup a definition for our enemy type.
@@ -150,40 +127,25 @@ public class Enemy : MonoBehaviour
                     break;
                 }
         }
-
         idleTime = UnityEngine.Random.Range(idleTimeMinMax.x, idleTimeMinMax.y);
     }
-    private void PlayerDetection()
+    //Enemy doesn't require a custom update
+    private void Update()
     {
-        if (state != AIState.Run)
+        bool dead = healthComponent.isDead;
+
+        if (!dead)
         {
-            Collider[] colliders = Physics.OverlapSphere(transform.position, detectionRadius);
-            int i = 0;
-            while (i < colliders.Length)
-            {
-                if (colliders[i].gameObject.layer == LayerMask.NameToLayer("Player"))
-                {
-                    state = AIState.Run;
-                    player = colliders[i].GetComponent<Player>();
-                }
-                i++;
-            }
+            AISolver();
+            ApplyMovement();
+            PlayerDetection();
+        }
+        else
+        {
+            PlayDeathAnimation();
+            _enemyManager.DeleteEnemy(this); // TODO : Make a better way to handle enemy deletion
         }
     }
-
-    /// <summary>
-    /// Handles death functionality for enemy.
-    /// TODO : Make a interface for death animation calls
-    /// </summary>
-    private void PlayDeathAnimation()
-    {
-        if (!isDeathAnimPlaying)
-        {
-            GameObject clone = Instantiate(deathEffectPrefab, transform.position, deathEffectPrefab.transform.rotation) as GameObject;
-            isDeathAnimPlaying = true;
-        }
-    }
-
     /// <summary>
     /// Method for state machine type AI system.
     /// </summary>
@@ -213,15 +175,14 @@ public class Enemy : MonoBehaviour
     /// </summary>
     private void HandleIdleState()
     {
-
+        anim.SetFloat("Speed", 0f);
         currIdleTime += Time.deltaTime;
         if(currIdleTime > idleTime)
         {
-            currIdleTime = 0;
-            idleTime = 0;
+            currIdleTime = 0.0f;
+            idleTime = 0.0f;
             state = AIState.Walk;
         }
-        anim.SetFloat("Speed", 0f);
     }
     /// <summary>
     /// Method to handle enemy in a neutral state.
@@ -237,7 +198,6 @@ public class Enemy : MonoBehaviour
         if (!target.set) {
             Vector3 randomPoint = spawnPoint + (UnityEngine.Random.insideUnitSphere * walkRadius);
             target.position = new Vector3(randomPoint.x, GetHeightPosition(randomPoint),randomPoint.z);
-     
             target.set = true;
         }
         else
@@ -262,9 +222,46 @@ public class Enemy : MonoBehaviour
 
             moveSpeed = 5f;
             turnSpeed = 5f;
-
+            anim.SetFloat("Speed", 1.0f);
         }
     }
+    /// <summary>
+    /// Player detection for enemy to run to away from him.
+    /// </summary>
+    private void PlayerDetection()
+    {
+        if (state != AIState.Run)
+        {
+            Collider[] colliders = Physics.OverlapSphere(transform.position, detectionRadius);
+            int i = 0;
+            while (i < colliders.Length)
+            {
+                if (colliders[i].gameObject.layer == LayerMask.NameToLayer("Player"))
+                {
+                    state = AIState.Run;
+                    player = colliders[i].GetComponent<Player>();
+                }
+                i++;
+            }
+        }
+    }
+    /// <summary>
+    /// Handles death functionality for enemy.
+    /// TODO : Make a interface for death animation calls
+    /// </summary>
+    private void PlayDeathAnimation()
+    {
+        if (!isDeathAnimPlaying)
+        {
+            GameObject clone = Instantiate(deathEffectPrefab, transform.position, deathEffectPrefab.transform.rotation) as GameObject;
+            isDeathAnimPlaying = true;
+        }
+    }
+    /// <summary>
+    /// Calculate the hieght position for enemy spawning.
+    /// </summary>
+    /// <param name="randomPoint"></param>
+    /// <returns></returns>
     private float GetHeightPosition(Vector3 randomPoint)
     {
         Vector3 heightPoint = new Vector3(randomPoint.x, 10, randomPoint.z);
@@ -279,7 +276,6 @@ public class Enemy : MonoBehaviour
         }
         return height;
     }
-
     /// <summary>
     /// Check distance before reseting state
     /// </summary>
@@ -322,8 +318,8 @@ public class Enemy : MonoBehaviour
         {
             Quaternion newRotation = Quaternion.LookRotation(moveDirection, Vector3.up);
             transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, Time.deltaTime * turnSpeed);
+            transform.position += transform.forward * Time.deltaTime * moveSpeed;
         }
-        transform.position += transform.forward * Time.deltaTime * moveSpeed;
     }
     /// <summary>
     /// Public method for enemy manager to call destruction.

@@ -121,4 +121,6 @@ public class Weapon : MonoBehaviour
             hit.collider.GetComponent<OnHealth>().OnTakeDamage(weaponDamage);
         }
     }
+
+   
 }

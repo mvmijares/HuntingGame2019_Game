@@ -47,8 +47,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2eac2ee3cce3f5443af60bb62bcbe4e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  state: 0
+  state: 2
   type: 1
+  idleTime: 0
   groundCheckDistance: 0
   moveSpeed: 2
   turnSpeed: 2

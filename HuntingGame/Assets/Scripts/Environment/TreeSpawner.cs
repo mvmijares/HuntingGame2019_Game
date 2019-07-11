@@ -73,7 +73,10 @@ public class TreeSpawner : MonoBehaviour
         }
   
     }
-
+    /// <summary>
+    /// Loads mesh and sets them for each tree spawn location.
+    /// </summary>
+    /// <param name="path"></param>
     private void LoadMesh(string path)
     {
         Mesh treeMesh = (Mesh)AssetDatabase.LoadAssetAtPath(path, typeof(Mesh));
@@ -84,7 +87,9 @@ public class TreeSpawner : MonoBehaviour
                 Debug.Log(t.name);
                 t.GetComponent<MeshFilter>().mesh = treeMesh;
                 //Add Physics Collider here
+                t.GetComponent<MeshCollider>().sharedMesh = treeMesh;
                 t.GetComponent<MeshRenderer>().sharedMaterial = treeMaterial;
+               
             }
 
             prefabContainer.SetActive(false);
@@ -170,7 +175,6 @@ public class TreeSpawner : MonoBehaviour
         AssetDatabase.CreateAsset(mesh, savePath);
 
         prefabContainer.SetActive(false);
-        
     }
 
 

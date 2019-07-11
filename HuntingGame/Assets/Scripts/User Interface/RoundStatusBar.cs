@@ -15,6 +15,9 @@ public class RoundStatusBar : MonoBehaviour
 
     private void Update()
     {
-        text.text = _gameManager.roundNum.ToString();
+        if (_gameManager)
+        { 
+            text.text = _gameManager.roundNum.ToString();
+        }
     }
 }

@@ -70,7 +70,7 @@ public class GameManager : MonoBehaviour
         emptyClip = false;
         numOfEnemies = 10; // Prototype variable
         isSpawnRunning = false;
-
+       
         _player = FindObjectOfType<Player>();
         if (_player)
             _player.ObjectInitialize(this);
@@ -83,6 +83,8 @@ public class GameManager : MonoBehaviour
         if (_hudManager)
             _hudManager.InitializeHUD(this);
 
+
+        enemyType = EnemyType.None;
     }
    
 
@@ -114,17 +116,16 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            enemyType = GetEnemyType();
+            if(enemyType == EnemyType.None)
+                enemyType = (EnemyType)UnityEngine.Random.Range(1, 4);
+
+            _hudManager.enemyStatusBar.SetEnemyType(enemyType);
             SpawnEnemyHandler();
             HandleRoundLogic();
             CheckObjectiveStatus();
         }
 
         PlayerWithinZone();
-    }
-    private EnemyType GetEnemyType()
-    {
-        return (EnemyType) UnityEngine.Random.Range(0, 3);
     }
     /// <summary>
     /// Function that contains the taasks for each round
@@ -203,6 +204,21 @@ public class GameManager : MonoBehaviour
         isSpawnRunning = false;
     }
     /// <summary>
+    /// Function for spawning enemies
+    /// </summary>
+    /// <param name="num"></param>
+    private void SpawnEnemies(int num)
+    {
+        if (num < 1) return; //error check
+
+        for (int i = 0; i < num; i++)
+        {
+            _eManager.CreateNewEnemy();
+            // TODO :   Setup a way to add Enemy Definitions to Enemy Manager 
+            //          based on round number.
+        }
+    }
+    /// <summary>
     /// Method for updating our killed enemy score.
     /// Opted out of using events because of scope of game.
     /// </summary>
@@ -234,21 +250,6 @@ public class GameManager : MonoBehaviour
         if (!pass)
         {
             _roundNum = 0;
-        }
-    }
-    /// <summary>
-    /// Function for spawning enemies
-    /// </summary>
-    /// <param name="num"></param>
-    private void SpawnEnemies(int num)
-    {
-        if (num < 1) return; //error check
-
-        for (int i = 0; i < num; i++)
-        {
-            _eManager.CreateNewEnemy();
-            // TODO :   Setup a way to add Enemy Definitions to Enemy Manager 
-            //          based on round number.
         }
     }
     /// <summary>

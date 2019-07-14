@@ -1118,6 +1118,7 @@ MonoBehaviour:
   enemySprite: {fileID: 21300000, guid: 500715d4aabbf0d47bcd8ed6f094dacf, type: 3}
   imageSize: {x: 100, y: 100}
   offset: {x: 5, y: 0}
+  enemySprites: []
   imageObjects: []
   lastIndex: 0
 --- !u!1 &644931060
@@ -11020,7 +11021,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8671830513911929347
 Transform:
   m_ObjectHideFlags: 0

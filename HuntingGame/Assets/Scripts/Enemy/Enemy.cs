@@ -10,7 +10,7 @@ public enum AIState
 };
 public enum EnemyType
 {
-    Chicken, Rooster, Goat, Pig
+    None, Chicken, Rooster, Goat, Pig
 }
 struct EnemyTarget
 {

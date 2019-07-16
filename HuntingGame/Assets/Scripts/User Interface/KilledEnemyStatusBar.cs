@@ -108,14 +108,13 @@ public class KilledEnemyStatusBar : MonoBehaviour
         }
     }
     /// <summary>
-    /// Turns the images back to active and resets the last index of the array
+    /// Hides the image bar until we set the enemy types again
     /// </summary>
-    public void ResetStatusBar()
+    public void HideImages()
     {
-        lastIndex = _gameManager.numOfEnemies - 1;
-        for(int i = 0; i < _gameManager.numOfEnemies; i++)
+        foreach(GameObject i in imageObjects)
         {
-            imageObjects[i].SetActive(true);
+            i.SetActive(false);
         }
     }
     /// <summary>

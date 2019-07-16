@@ -347,7 +347,7 @@ Transform:
   m_LocalScale: {x: 45, y: 1, z: 45}
   m_Children: []
   m_Father: {fileID: 8671830514589357482}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &108511241
 GameObject:
@@ -759,7 +759,7 @@ PrefabInstance:
     - target: {fileID: 7808604327284515121, guid: 5fe716352850f85499d9d5d6025d5eed,
         type: 3}
       propertyPath: startTime
-      value: 10
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7808604327284515121, guid: 5fe716352850f85499d9d5d6025d5eed,
         type: 3}
@@ -1536,8 +1536,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 898851789}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 63.6, z: -24}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8671463455011145516}
@@ -1545,7 +1545,7 @@ Transform:
   - {fileID: 8671660483936323163}
   - {fileID: 8671159491104786424}
   m_Father: {fileID: 8671830514589357482}
-  m_RootOrder: 2
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1021810620
 GameObject:
@@ -2410,7 +2410,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8671830514589357482}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1690558933
 GameObject:
@@ -3432,6 +3432,7 @@ GameObject:
   - component: {fileID: 3431691193494462471}
   - component: {fileID: 1572121043246613165}
   - component: {fileID: 1893451901791020838}
+  - component: {fileID: 347417623897004117}
   m_Layer: 0
   m_Name: Player Camera
   m_TagString: Untagged
@@ -3439,6 +3440,24 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &347417623897004117
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 347417623897004116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba6af5eaa8d821f4e93093fd37ee3484, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_Version: 2
 --- !u!81 &1572121043246613165
 AudioListener:
   m_ObjectHideFlags: 0
@@ -7853,7 +7872,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 40
-  field of view: 60
+  field of view: 80
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -7991,7 +8010,7 @@ GameObject:
   - component: {fileID: 6898689681928457222}
   - component: {fileID: 6905673327532677188}
   - component: {fileID: 6917308896689989820}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: SM_Env_BackgroundCard_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8009,7 +8028,7 @@ GameObject:
   - component: {fileID: 6898700943586000162}
   - component: {fileID: 6905673652637457718}
   - component: {fileID: 6917250477263621180}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: SM_Env_BackgroundCard_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8027,7 +8046,7 @@ GameObject:
   - component: {fileID: 6898652162983706022}
   - component: {fileID: 6906974976890150336}
   - component: {fileID: 6917068746974186046}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: SM_Env_BackgroundCard_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8110,7 +8129,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_DynamicOccludee: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -8147,7 +8166,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_DynamicOccludee: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -8184,7 +8203,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_DynamicOccludee: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -9921,7 +9940,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_DynamicOccludee: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -9958,7 +9977,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_DynamicOccludee: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -9995,7 +10014,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_DynamicOccludee: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -10032,7 +10051,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_DynamicOccludee: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -10069,7 +10088,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_DynamicOccludee: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -10106,7 +10125,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_DynamicOccludee: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -10143,7 +10162,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_DynamicOccludee: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -10180,7 +10199,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_DynamicOccludee: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -10217,7 +10236,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_DynamicOccludee: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -10254,7 +10273,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_DynamicOccludee: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -10291,7 +10310,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_DynamicOccludee: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -10328,7 +10347,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_DynamicOccludee: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -10365,7 +10384,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_DynamicOccludee: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -10402,7 +10421,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_DynamicOccludee: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -10439,7 +10458,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_DynamicOccludee: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -10476,7 +10495,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_DynamicOccludee: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -10513,7 +10532,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_DynamicOccludee: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -10550,7 +10569,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_DynamicOccludee: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -11021,7 +11040,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &8671830513911929347
 Transform:
   m_ObjectHideFlags: 0
@@ -11030,7 +11049,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8671830513911929346}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 5, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8671830514777105940}
@@ -11101,9 +11120,9 @@ Transform:
   m_Children:
   - {fileID: 8671830513911929347}
   - {fileID: 2536053258612342345}
-  - {fileID: 898851790}
   - {fileID: 93867131}
   - {fileID: 1594564521}
+  - {fileID: 898851790}
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -11148,7 +11167,7 @@ GameObject:
   - component: {fileID: 8671661146247627292}
   - component: {fileID: 8660221046943807786}
   - component: {fileID: 8650342396718489332}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: SM_Env_BackgroundCard_03 (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11166,7 +11185,7 @@ GameObject:
   - component: {fileID: 8667347016464787604}
   - component: {fileID: 8659819291808015984}
   - component: {fileID: 8650459757269456712}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: SM_Env_BackgroundCard_01 (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11184,7 +11203,7 @@ GameObject:
   - component: {fileID: 8667717239814689246}
   - component: {fileID: 8659878016057995192}
   - component: {fileID: 8649879890627773350}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: SM_Env_BackgroundCard_02 (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11202,7 +11221,7 @@ GameObject:
   - component: {fileID: 8667330097383503238}
   - component: {fileID: 8659912530397652602}
   - component: {fileID: 8650021818127092172}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: SM_Env_BackgroundCard_03 (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11220,7 +11239,7 @@ GameObject:
   - component: {fileID: 8671179371162013988}
   - component: {fileID: 8660033090007655914}
   - component: {fileID: 8650362019228273264}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: SM_Env_BackgroundCard_02 (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11238,7 +11257,7 @@ GameObject:
   - component: {fileID: 8667695031951089380}
   - component: {fileID: 8659898286726030092}
   - component: {fileID: 8649793689719981444}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: SM_Env_BackgroundCard_01 (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11256,7 +11275,7 @@ GameObject:
   - component: {fileID: 8671119028902948458}
   - component: {fileID: 8656112383563207768}
   - component: {fileID: 8650337603921218954}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: SM_Env_BackgroundCard_02 (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11274,7 +11293,7 @@ GameObject:
   - component: {fileID: 8667303854947704660}
   - component: {fileID: 8656086448066321274}
   - component: {fileID: 8650395135028882438}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: SM_Env_BackgroundCard_01 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11292,7 +11311,7 @@ GameObject:
   - component: {fileID: 8671443697416265302}
   - component: {fileID: 8660217233067419634}
   - component: {fileID: 8649513659286481036}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: SM_Env_BackgroundCard_03 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11310,7 +11329,7 @@ GameObject:
   - component: {fileID: 8671159491104786424}
   - component: {fileID: 8660379433214497436}
   - component: {fileID: 8650254315370366378}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: SM_Env_BackgroundCard_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11328,7 +11347,7 @@ GameObject:
   - component: {fileID: 8667685292573761110}
   - component: {fileID: 8659926752532295920}
   - component: {fileID: 8650179391704038764}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: SM_Env_BackgroundCard_01 (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11346,7 +11365,7 @@ GameObject:
   - component: {fileID: 8671509895528896306}
   - component: {fileID: 8656143163038298812}
   - component: {fileID: 8650225034098040822}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: SM_Env_BackgroundCard_03 (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11364,7 +11383,7 @@ GameObject:
   - component: {fileID: 8671389090702705098}
   - component: {fileID: 8660299057451656012}
   - component: {fileID: 8650054403240391098}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: SM_Env_BackgroundCard_01 (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11398,7 +11417,7 @@ GameObject:
   - component: {fileID: 8667247991958644560}
   - component: {fileID: 8655950746051688450}
   - component: {fileID: 8649868514675566056}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: SM_Env_BackgroundCard_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11416,7 +11435,7 @@ GameObject:
   - component: {fileID: 8667629710971028704}
   - component: {fileID: 8659638516201438770}
   - component: {fileID: 8649917703156796516}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: SM_Env_BackgroundCard_02 (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11434,7 +11453,7 @@ GameObject:
   - component: {fileID: 8671660483936323163}
   - component: {fileID: 8660399022023269405}
   - component: {fileID: 8650722828389970653}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: SM_Env_BackgroundCard_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11452,7 +11471,7 @@ GameObject:
   - component: {fileID: 8671502255624313226}
   - component: {fileID: 8656160949446634120}
   - component: {fileID: 8650122141803044170}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: SM_Env_BackgroundCard_02 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11470,7 +11489,7 @@ GameObject:
   - component: {fileID: 8667436882778454014}
   - component: {fileID: 8659612850003989362}
   - component: {fileID: 8649786935074409312}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: SM_Env_BackgroundCard_02 (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

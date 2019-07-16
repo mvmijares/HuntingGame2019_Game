@@ -86,6 +86,7 @@ public class Weapon : MonoBehaviour
     private void Fire()
     {
         if (!_player) return;
+
         if (_clip > 0)
         {
             _clip--;
@@ -95,11 +96,10 @@ public class Weapon : MonoBehaviour
                 CheckWeaponCollision(hit);
             }
         }
-        else
-        {
-            _clip = 0;
-            _player.GetGameManager().PlayerEmptyAmmoClip(); // TODO L Make an event for this
-        }
+
+        if(clip <= 0)
+            _player.GetGameManager().PlayerEmptyAmmoClip(); // TODO : Make an event for this
+        
     }
     /// <summary>
     /// Function to handle weapon collision functionality

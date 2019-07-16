@@ -18,9 +18,6 @@ using UnityEngine;
  * - Gameplay Experience
  *      - Rounds should be 1 min each
  *      - Targets should "disappear" shortly after being spawned
- * 
- * 
- * 
  */
 public class GameManager : MonoBehaviour
 {
@@ -116,10 +113,12 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            if(enemyType == EnemyType.None)
+            // Make this into a seperate function if it gets too large
+            if (enemyType == EnemyType.None)
+            {
                 enemyType = (EnemyType)UnityEngine.Random.Range(1, 4);
-
-            _hudManager.enemyStatusBar.SetEnemyType(enemyType);
+                _hudManager.enemyStatusBar.SetEnemyType(enemyType);
+            }
             SpawnEnemyHandler();
             HandleRoundLogic();
             CheckObjectiveStatus();
@@ -137,19 +136,18 @@ public class GameManager : MonoBehaviour
     private void HandleRoundLogic()
     {
         currRoundTime += Time.deltaTime;
-        if (currRoundTime >= roundTime)
+        if (currRoundTime >= roundTime) // if the current time exceeds time limit.
         {
             checkRoundStatus = true;
-            _hudManager.enemyStatusBar.ResetStatusBar();
-        } else if (emptyClip)
+        }
+        else if (emptyClip) //if player has no more ammo left
         {
             checkRoundStatus = true;
-            _hudManager.enemyStatusBar.ResetStatusBar();
-        } else if (killedEnemies >= numOfEnemies)
+        }
+        else if (killedEnemies >= numOfEnemies) //if player has killed all enemies
         {
             checkRoundStatus = true;
             _roundNum++;
-            _hudManager.enemyStatusBar.ResetStatusBar();
         }
     }
     /// <summary>
@@ -162,7 +160,8 @@ public class GameManager : MonoBehaviour
             StopCoroutine(SpawnEnemyCoroutine());
             _player.weapon.SetClipSize(0);
             _eManager.DeleteAllEnemies();
-
+            _hudManager.enemyStatusBar.HideImages();
+            enemyType = EnemyType.None;
             start = false;
             checkRoundStatus = false;
             emptyClip = false;
@@ -226,6 +225,7 @@ public class GameManager : MonoBehaviour
     {
         if (VerifyEnemyType(target))
         {
+            Debug.Log("Called");
             killedEnemies++;
             _hudManager.enemyStatusBar.EnemyWasKilled();
         }
@@ -258,8 +258,7 @@ public class GameManager : MonoBehaviour
     private void PlayerWithinZone()
     {
         float distance = (_player.transform.position - playerSpawnPoint.position).magnitude;
-        Debug.Log(distance);
-        withinZone = (distance < moveRadius) ? true : false;
         
+        withinZone = (distance < moveRadius) ? true : false;
     }
 }

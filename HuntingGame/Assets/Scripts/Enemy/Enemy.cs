@@ -322,14 +322,6 @@ public class Enemy : MonoBehaviour
         }
     }
     /// <summary>
-    /// Public method for enemy manager to call destruction.
-    /// Used for destroying all enemies in list
-    /// </summary>
-    public void EnemyDestructionCall()
-    {
-        PlayDeathAnimation();
-    }
-    /// <summary>
     /// Debug Draw calls for behind the scenes logic
     /// </summary>
     private void OnDrawGizmos()

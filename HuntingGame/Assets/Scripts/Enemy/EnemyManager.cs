@@ -16,7 +16,7 @@ public class EnemyManager : MonoBehaviour
 
     private bool groundCheck = false;
     private int groundMask;
-
+    private bool deleteAllEnemies = false;
     /// <summary>
     /// Initialization our our manager class
     /// </summary>
@@ -33,7 +33,7 @@ public class EnemyManager : MonoBehaviour
     public void CreateNewEnemy()
     {
         int choice = 0;
-        choice = Random.Range(0, enemyPrefabs.Count - 1 );
+        choice = Random.Range(0, enemyPrefabs.Count);
 
         Enemy newEnemy = Instantiate(enemyPrefabs[choice], GetSpawnPosition(), enemyPrefabs[choice].transform.rotation).GetComponent<Enemy>();
         newEnemy.Initialize(this, _gameManager.enemyHealthSize);
@@ -50,7 +50,8 @@ public class EnemyManager : MonoBehaviour
             enemyList.Remove(target);
             Destroy(target.gameObject);
         }
-        _gameManager.EnemyWasKilled(target);
+        if(!deleteAllEnemies)
+            _gameManager.EnemyWasKilled(target);
     }
     
     /// <summary>
@@ -60,12 +61,14 @@ public class EnemyManager : MonoBehaviour
     /// </summary>
     public void DeleteAllEnemies()
     {
-        foreach(Enemy e in enemyList)
+        deleteAllEnemies = true;
+
+        foreach (Enemy e in enemyList)
         {
-            e.EnemyDestructionCall();
-            Destroy(e.gameObject);
+            e.GetComponent<OnHealth>().health = 0;
         }
-        enemyList.Clear();
+
+        deleteAllEnemies = false;
     }
 
     private Vector3 GetSpawnPosition()
@@ -101,8 +104,5 @@ public class EnemyManager : MonoBehaviour
         Gizmos.color = Color.red;
         if(spawnZoneCenter)
             Gizmos.DrawWireSphere(spawnZoneCenter.position, spawnZoneRadius);
-
     }
-
- 
 }

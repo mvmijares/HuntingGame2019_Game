@@ -35,11 +35,13 @@ public class Enemy : MonoBehaviour
     public enum AIState { Walk, Run, Idle}
     [SerializeField] AIState state;
     public EnemyType type;
+    private GameManager _gameManager;
     private EnemyManager _enemyManager;
+    [SerializeField] private AudioHandler _audioHandler;
+    private AudioSource audioSource;
     private Player player;
     private CapsuleCollider col;
-    Rigidbody rigidbody;
-
+    [SerializeField] private AudioClip sfxClip;
     private OnHealth healthComponent;
     private GameObject model;
     [SerializeField] private float idleTime;
@@ -69,9 +71,12 @@ public class Enemy : MonoBehaviour
     public void Initialize(EnemyManager manager, int health)
     {
         _enemyManager = manager;
+        _gameManager = manager.gameManager;
+        _audioHandler = _gameManager.audioHandler;
+        audioSource = GetComponent<AudioSource>();
         col = GetComponent<CapsuleCollider>();
-        rigidbody = GetComponent<Rigidbody>();
         healthComponent = GetComponent<OnHealth>();
+  
         anim = GetComponentInChildren<Animator>();
         if (anim)
             model = anim.gameObject; // assuming our model has a animator attached to it.
@@ -87,6 +92,7 @@ public class Enemy : MonoBehaviour
         detectionRadius = 3.0f;
         isGrounded = false;
         groundCheckDistance = 1f;
+        healthComponent.health = health;
     }
     /// <summary>
     /// Setup a definition for our enemy type.
@@ -103,6 +109,7 @@ public class Enemy : MonoBehaviour
                     idleTimeMinMax = new Vector2(3, 5f);
                     walkRadius = 5f;
                     remainingDistance = 1f;
+                    sfxClip = _audioHandler.GetClip("Chicken");
                     break;
                 }
             case EnemyType.Goat:
@@ -110,6 +117,7 @@ public class Enemy : MonoBehaviour
                     idleTimeMinMax = new Vector2(3, 5f);
                     walkRadius = 5f;
                     remainingDistance = 1f;
+                    sfxClip = _audioHandler.GetClip("Goat");
                     break;
                 }
             case EnemyType.Pig:
@@ -117,6 +125,7 @@ public class Enemy : MonoBehaviour
                     idleTimeMinMax = new Vector2(3, 5f);
                     walkRadius = 5f;
                     remainingDistance = 1f;
+                    sfxClip = _audioHandler.GetClip("Pig");
                     break;
                 }
             case EnemyType.Rooster:
@@ -124,10 +133,12 @@ public class Enemy : MonoBehaviour
                     idleTimeMinMax = new Vector2(3, 5f);
                     walkRadius = 5f;
                     remainingDistance = 1f;
+                    sfxClip = _audioHandler.GetClip("Rooster");
                     break;
                 }
         }
         idleTime = UnityEngine.Random.Range(idleTimeMinMax.x, idleTimeMinMax.y);
+
     }
     //Enemy doesn't require a custom update
     private void Update()
@@ -145,6 +156,11 @@ public class Enemy : MonoBehaviour
             PlayDeathAnimation();
             _enemyManager.DeleteEnemy(this); // TODO : Make a better way to handle enemy deletion
         }
+    }
+    public void DeleteAllEnemyEvent()
+    {
+        PlayDeathAnimation();
+        Destroy(gameObject);
     }
     /// <summary>
     /// Method for state machine type AI system.
@@ -254,6 +270,12 @@ public class Enemy : MonoBehaviour
         if (!isDeathAnimPlaying)
         {
             GameObject clone = Instantiate(deathEffectPrefab, transform.position, deathEffectPrefab.transform.rotation) as GameObject;
+            if (healthComponent.health <= 0) //Only play sound when health is 0
+            {
+                AudioSource audioComponent = clone.GetComponent<AudioSource>();
+                audioComponent.clip = sfxClip;
+                audioComponent.Play();
+            }
             isDeathAnimPlaying = true;
         }
     }
@@ -332,5 +354,4 @@ public class Enemy : MonoBehaviour
             Gizmos.DrawWireCube(target.position, Vector3.one);
         }
     }
-   
 }

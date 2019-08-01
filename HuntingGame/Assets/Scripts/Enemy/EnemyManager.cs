@@ -11,6 +11,7 @@ public class EnemyManager : MonoBehaviour
     public float raycastDistance = 15f;
     [SerializeField] List<Enemy> enemyList;
     GameManager _gameManager;
+    public GameManager gameManager { get { return _gameManager; } }
     public List<GameObject> enemyPrefabs;
     public float spawnHeightOffset = 0.15f;
 
@@ -30,13 +31,14 @@ public class EnemyManager : MonoBehaviour
     /// <summary>
     /// Create a new enemy during run-time
     /// </summary>
-    public void CreateNewEnemy()
+    public void CreateNewEnemy(int health)
     {
         int choice = 0;
         choice = Random.Range(0, enemyPrefabs.Count);
 
         Enemy newEnemy = Instantiate(enemyPrefabs[choice], GetSpawnPosition(), enemyPrefabs[choice].transform.rotation).GetComponent<Enemy>();
-        newEnemy.Initialize(this, _gameManager.enemyHealthSize);
+        newEnemy.Initialize(this, health);
+        
         enemyList.Add(newEnemy);
     }
     /// <summary>
@@ -45,15 +47,10 @@ public class EnemyManager : MonoBehaviour
     /// <param name="target"></param>
     public void DeleteEnemy(Enemy target)
     {
-        if (enemyList.Contains(target))
-        {
-            enemyList.Remove(target);
-            Destroy(target.gameObject);
-        }
-        if(!deleteAllEnemies)
-            _gameManager.EnemyWasKilled(target);
+        _gameManager.EnemyWasKilled(target);
+        enemyList.Remove(target);
+        Destroy(target.gameObject);
     }
-    
     /// <summary>
     /// Deletes all enemies 
     /// TODO : Make a better enemy deletion system.
@@ -61,16 +58,16 @@ public class EnemyManager : MonoBehaviour
     /// </summary>
     public void DeleteAllEnemies()
     {
-        deleteAllEnemies = true;
-
         foreach (Enemy e in enemyList)
         {
-            e.GetComponent<OnHealth>().health = 0;
+            e.DeleteAllEnemyEvent();
         }
-
-        deleteAllEnemies = false;
+        enemyList.Clear();
     }
-
+    /// <summary>
+    /// Function calculates a position from casting a ray from x height and hitting the ground.
+    /// </summary>
+    /// <returns></returns>
     private Vector3 GetSpawnPosition()
     {
         Vector3 newPosition = Vector3.zero;

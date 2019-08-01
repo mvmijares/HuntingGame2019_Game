@@ -24,7 +24,7 @@ public class TreeSpawner : MonoBehaviour
     public GameObject prefabContainer;
     [SerializeField] private int groundLayerMask;
 
-    private string treeAssetPath = "Assets/Prefabs/Environment/Trees/";
+    private string treeAssetPath = "Assets/Resources/Terrain/";
     private string treeAssetName = "Trees Prefab";
  
  
@@ -47,44 +47,44 @@ public class TreeSpawner : MonoBehaviour
         if (numOfTrees > 100)
             numOfTrees = 100;
 
+    #if UNITY_EDITOR
+        CreateAsset();
+    #endif
+        LoadMesh();
+    }
+
+    private void CreateAsset()
+    {
         string savePath = treeAssetPath + treeAssetName + ".asset";
 
         bool exists = AssetDatabase.GetMainAssetTypeAtPath(savePath) != null;
-        
-        if (!exists)
-        {
-            if (treePrefabs.Count > 0)
-            {
-                for (int i = 0; i < numOfTrees; i++)
-                {
-                    GameObject newTree = SpawnNewTree();
-                    if (prefabContainer)
-                        newTree.transform.SetParent(prefabContainer.transform);
-                    
-                }
 
-                CombineMeshes();
-                LoadMesh(savePath);
-            }
-        }
-        else
+        if (treePrefabs.Count > 0)
         {
-            LoadMesh(savePath);
+            for (int i = 0; i < numOfTrees; i++)
+            {
+                GameObject newTree = SpawnNewTree();
+                if (prefabContainer)
+                    newTree.transform.SetParent(prefabContainer.transform);
+
+            }
+
+            CombineMeshes();
+            LoadMesh();
         }
-  
     }
     /// <summary>
     /// Loads mesh and sets them for each tree spawn location.
     /// </summary>
     /// <param name="path"></param>
-    private void LoadMesh(string path)
+    private void LoadMesh()
     {
-        Mesh treeMesh = (Mesh)AssetDatabase.LoadAssetAtPath(path, typeof(Mesh));
+        Mesh treeMesh = Resources.Load<Mesh>("Terrain/Trees Prefab");
+
         if (treeMesh)
         {
             foreach (GameObject t in spawnLocations)
             {
-                Debug.Log(t.name);
                 t.GetComponent<MeshFilter>().mesh = treeMesh;
                 //Add Physics Collider here
                 t.GetComponent<MeshCollider>().sharedMesh = treeMesh;

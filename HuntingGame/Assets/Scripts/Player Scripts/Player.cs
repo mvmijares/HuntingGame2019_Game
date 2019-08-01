@@ -10,6 +10,7 @@ public class Player : BaseObject
     PlayerMovement _playerMovement;
     public PlayerMovement playerMovement { get { return playerMovement; } }
     public CameraController cameraController;
+    private AudioSource audioSource;
     AimIKHelper _aimIKHelper;
     public AimIKHelper aimIKHelper { get { return _aimIKHelper; } }
     WeaponAim _weaponAim;
@@ -21,7 +22,6 @@ public class Player : BaseObject
     [Tooltip("Player turn speed")]
     public float turnSpeed;
     public float aimSpeed = 1;
-
 
     private float horizontalInput;
     private Quaternion quaternionFromRotation;
@@ -40,6 +40,8 @@ public class Player : BaseObject
         _weaponAim.Initialize(this);
         _weapon = GetComponentInChildren<Weapon>();
         _weapon.Initialize(this);
+        audioSource = GetComponent<AudioSource>();
+        audioSource.clip = GetGameManager().audioHandler.GetClip("Background Music");
         cameraController.Initialize(this);
     }
 
@@ -49,13 +51,15 @@ public class Player : BaseObject
         _playerInput.CustomUpdate();
         _playerMovement.CustomUpdate();
         cameraController.CustomUpdate();
+        
+        if (!audioSource.isPlaying)
+            audioSource.Play();
     }
     public override void CustomLateUpdate()
     {
         base.CustomLateUpdate();
         _weaponAim.CustomLateUpdate();
         _aimIKHelper.CustomLateUpdate();
-
         cameraController.CustomLateUpdate();
     }
 }

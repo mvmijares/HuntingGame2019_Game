@@ -1,15 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 /* Created By: Michael-Vincent Mijares
  * Creation Date : 06-26-2019
  * 
  */
- /// <summary>
- /// Handles HUD related functionality.
- /// TODO : Create event management system (observer pattern / Model-View-Viewmodel)
- /// </summary>
+/// <summary>
+/// Handles HUD related functionality.
+/// TODO : Create event management system (observer pattern / Model-View-Viewmodel)
+/// 
+/// TODO : replace Object.FindObjectOfType because of slow overhead.
+/// /// </summary>
 public class HUDManager : MonoBehaviour
 {
     private GameManager _gameManager;
@@ -22,8 +24,13 @@ public class HUDManager : MonoBehaviour
     public RoundStatusBar roundStatusBar { get { return _roundStatusBar; } }
     [SerializeField] TimerStatusBar _timerStatusBar;
     public TimerStatusBar timerStatusBar { get { return _timerStatusBar; } }
+    AudioStatusBar _audioStatusBar;
+    public AudioStatusBar audioStatusBar { get { return _audioStatusBar; } }
+
+    public GameObject roundOverText;
     [SerializeField] FadeScreen _fadeScreen;
     public FadeScreen fadeScreen { get { return _fadeScreen; } }
+
     public void InitializeHUD(GameManager manager)
     {
         _gameManager = manager;
@@ -51,11 +58,22 @@ public class HUDManager : MonoBehaviour
         if (_timerStatusBar)
             _timerStatusBar.InitializeStatusBar(_gameManager);
 
+        _audioStatusBar = FindObjectOfType<AudioStatusBar>();
+        if (_audioStatusBar)
+            _audioStatusBar.InitializeStatusBar(_gameManager);
+
         _fadeScreen = FindObjectOfType<FadeScreen>();
+
+
         if (_fadeScreen)
         {
             _fadeScreen.InitializeFadeScreenBar(_gameManager);
             _fadeScreen.FadeEvent(FadeType.Out);
         }
+    }
+
+    private void Update()
+    {
+        
     }
 }

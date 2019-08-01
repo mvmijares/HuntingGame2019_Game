@@ -27,6 +27,8 @@ public class GameManager : MonoBehaviour
     public EnemyManager eManager { get { return _eManager; } }
     [SerializeField] HUDManager _hudManager;
     public HUDManager hudManager { get { return _hudManager; } }
+    [SerializeField] AudioHandler _audioHandler;
+    public AudioHandler audioHandler { get { return _audioHandler; } }
 
     private int _roundNum;
     public int roundNum { get { return _roundNum; } }
@@ -62,12 +64,17 @@ public class GameManager : MonoBehaviour
     [SerializeField] private bool withinZone;
     private bool emptyClip;
 
+    public int spawnPerSecond;
     private void Awake()
     {
         emptyClip = false;
         numOfEnemies = 10; // Prototype variable
         isSpawnRunning = false;
-       
+
+        _audioHandler = FindObjectOfType<AudioHandler>();
+        if (_audioHandler)
+            _audioHandler.ObjectInitialize(this);
+
         _player = FindObjectOfType<Player>();
         if (_player)
             _player.ObjectInitialize(this);
@@ -80,16 +87,23 @@ public class GameManager : MonoBehaviour
         if (_hudManager)
             _hudManager.InitializeHUD(this);
 
-
         enemyType = EnemyType.None;
     }
-   
-
     //Methods to handle order of execution for Update / LateUpdate
     private void Update()
     {
         ProcessGameTasks();
         _player.CustomUpdate();
+        audioHandler.CustomUpdate();
+        GeneralInput();
+    }
+
+    private void GeneralInput()
+    {
+        if (Input.GetKey(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
     }
 
     private void LateUpdate()
@@ -123,7 +137,6 @@ public class GameManager : MonoBehaviour
             HandleRoundLogic();
             CheckObjectiveStatus();
         }
-
         PlayerWithinZone();
     }
     /// <summary>
@@ -198,7 +211,9 @@ public class GameManager : MonoBehaviour
     /// <returns></returns>
     IEnumerator SpawnEnemyCoroutine()
     {
-        SpawnEnemies(1);
+        if (spawnPerSecond < 1)
+            spawnPerSecond = 1;
+        SpawnEnemies(spawnPerSecond);
         yield return new WaitForSeconds(1.0f);
         isSpawnRunning = false;
     }
@@ -212,7 +227,7 @@ public class GameManager : MonoBehaviour
 
         for (int i = 0; i < num; i++)
         {
-            _eManager.CreateNewEnemy();
+            _eManager.CreateNewEnemy(enemyHealthSize);
             // TODO :   Setup a way to add Enemy Definitions to Enemy Manager 
             //          based on round number.
         }
@@ -225,7 +240,6 @@ public class GameManager : MonoBehaviour
     {
         if (VerifyEnemyType(target))
         {
-            Debug.Log("Called");
             killedEnemies++;
             _hudManager.enemyStatusBar.EnemyWasKilled();
         }

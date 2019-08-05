@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,12 +9,14 @@ public class KilledEnemyStatusBar : MonoBehaviour
     GameManager _gameManager;
     [Tooltip("Image for displaying how many enemies left.")]
     public Sprite enemySprite;
-    public Vector2 imageSize;
-    public Vector2 offset;
+    private float sizeX;
+    public float offset;
+    public float height;
     [SerializeField] private Sprite[] enemySprites;
     [SerializeField] private GameObject[] imageObjects;
     [SerializeField] private int lastIndex; // last index of enemy image
     private float xPos;
+    public GameObject layoutGroup;
     EnemyType type = EnemyType.None; 
     /// <summary>
     /// Initialization function
@@ -24,6 +27,7 @@ public class KilledEnemyStatusBar : MonoBehaviour
         _gameManager = manager;
         LoadArtAssets();
         CreateImagePrefabs();
+      
     }
     /// <summary>
     /// Loads all art assets for the enemy bar
@@ -42,19 +46,24 @@ public class KilledEnemyStatusBar : MonoBehaviour
     /// </summary>
     private void CreateImagePrefabs()
     {
-        xPos = (-imageSize.x - offset.x) * 5; // 5 units to the left
+      // 5 units to the left
         imageObjects = new GameObject[_gameManager.numOfEnemies];
         lastIndex = _gameManager.numOfEnemies - 1;
         for (int i = 0; i < _gameManager.numOfEnemies; i++)
         {
             GameObject clone = new GameObject("Enemy Image " + i.ToString());
-            clone.transform.SetParent(transform);
             clone.AddComponent<Image>();
-            clone.GetComponent<RectTransform>().anchoredPosition = new Vector2(xPos, 0);
+            clone.transform.SetParent(layoutGroup.transform);
             imageObjects[i] = clone;
-            clone.SetActive(false);
-            xPos += imageSize.x + offset.x;
         }
+        sizeX = layoutGroup.transform.GetChild(0).GetComponent<RectTransform>().sizeDelta.x;
+        xPos = (-sizeX * 5) + offset;
+        layoutGroup.GetComponent<RectTransform>().anchoredPosition = new Vector2(xPos, height);
+        SetGroupActive(false);
+    }
+    public void SetGroupActive(bool condition)
+    {
+        layoutGroup.SetActive(condition);
     }
     /// <summary>
     /// Grabs the enemy type from game manager. 
@@ -94,6 +103,7 @@ public class KilledEnemyStatusBar : MonoBehaviour
                     break;
                 }
         }
+        SetGroupActive(true);
     }
     /// <summary>
     /// Sets all the sprites for each image object

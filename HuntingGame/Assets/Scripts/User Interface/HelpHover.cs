@@ -21,22 +21,25 @@ public class HelpHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
 
     private void Update()
-    {
+    { 
         if (isHovering)
         {
             float xPos = panelRect.anchoredPosition.x;
             float yPos = panelRect.anchoredPosition.y;
-            Debug.Log(xPos);
-            if (xPos > -(anchoredPosOrigin.x / 2))
+            if (xPos > 0)
             {
                 panelRect.anchoredPosition = new Vector2(xPos -= Time.deltaTime * speed, yPos);
+            }
+            else
+            {
+                panelRect.anchoredPosition = new Vector2(0, yPos);
             }
         }
         else
         {
+          
             float xPos = panelRect.anchoredPosition.x;
             float yPos = panelRect.anchoredPosition.y;
-            Debug.Log(xPos);
             if (xPos < anchoredPosOrigin.x)
             {
                 panelRect.anchoredPosition = new Vector2(xPos += Time.deltaTime * speed, yPos);
@@ -47,7 +50,7 @@ public class HelpHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     {
         isHovering = true;
     }
-
+    
     public void OnPointerExit(PointerEventData eventData)
     {
         isHovering = false;

@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
 using System;
 /// <summary>
 /// TODO : Make an editor script for automating tree spawning
@@ -24,8 +23,7 @@ public class TreeSpawner : MonoBehaviour
     public GameObject prefabContainer;
     [SerializeField] private int groundLayerMask;
 
-    private string treeAssetPath = "Assets/Resources/Terrain/";
-    private string treeAssetName = "Trees Prefab";
+
  
  
     /// <summary>
@@ -47,31 +45,7 @@ public class TreeSpawner : MonoBehaviour
         if (numOfTrees > 100)
             numOfTrees = 100;
 
-    #if UNITY_EDITOR
-        CreateAsset();
-    #endif
         LoadMesh();
-    }
-
-    private void CreateAsset()
-    {
-        string savePath = treeAssetPath + treeAssetName + ".asset";
-
-        bool exists = AssetDatabase.GetMainAssetTypeAtPath(savePath) != null;
-
-        if (treePrefabs.Count > 0)
-        {
-            for (int i = 0; i < numOfTrees; i++)
-            {
-                GameObject newTree = SpawnNewTree();
-                if (prefabContainer)
-                    newTree.transform.SetParent(prefabContainer.transform);
-
-            }
-
-            CombineMeshes();
-            LoadMesh();
-        }
     }
     /// <summary>
     /// Loads mesh and sets them for each tree spawn location.
@@ -143,39 +117,5 @@ public class TreeSpawner : MonoBehaviour
 
         return position;
     }
-    /// <summary>
-    /// Combines all the tree meshes together.
-    /// Reduces draw calls and verts used
-    /// </summary>
-    private void CombineMeshes()
-    {
-        MeshCollider meshCollider = prefabContainer.GetComponent<MeshCollider>();
-        MeshFilter meshFilter = prefabContainer.GetComponent<MeshFilter>();
-        
-        MeshFilter[] meshFilters = prefabContainer.GetComponentsInChildren<MeshFilter>();
-        CombineInstance[] combine = new CombineInstance[meshFilters.Length];
-
-        for (int i = 0; i < meshFilters.Length; i++)
-        {
-            if (meshFilters[i].transform == prefabContainer.transform)
-                continue;
-
-            combine[i].mesh = meshFilters[i].sharedMesh;
-            combine[i].transform = meshFilters[i].transform.localToWorldMatrix;
-
-        }
-
-        Mesh mesh = new Mesh();
-        mesh.CombineMeshes(combine);
-
-        meshFilter.sharedMesh = mesh;
-        meshCollider.sharedMesh = mesh;
-
-        string savePath = treeAssetPath + treeAssetName + ".asset";
-        AssetDatabase.CreateAsset(mesh, savePath);
-
-        prefabContainer.SetActive(false);
-    }
-
-
+   
 }

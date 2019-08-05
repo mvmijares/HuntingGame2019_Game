@@ -60,6 +60,11 @@ public class AudioHandler : BaseObject
     /// </summary>
     private void HandleVolume()
     {
+        if (mute)
+        {
+            masterVolume = 0;
+        }
+
         if (Input.GetKey(KeyCode.DownArrow))
         {
             if (masterVolume > 0)
@@ -82,14 +87,7 @@ public class AudioHandler : BaseObject
             a.volume = masterVolume;
         }
 
-        if (mute)
-        {
-            foreach (AudioSource a in audioSources)
-            {
-                a.volume = 0f;
-            }
-        }
-
+      
     }
     /// <summary>
     /// Grab clip from audio list

@@ -274,6 +274,7 @@ public class Enemy : MonoBehaviour
             {
                 AudioSource audioComponent = clone.GetComponent<AudioSource>();
                 audioComponent.clip = sfxClip;
+                audioComponent.volume = _audioHandler.GetVolume();
                 audioComponent.Play();
             }
             isDeathAnimPlaying = true;

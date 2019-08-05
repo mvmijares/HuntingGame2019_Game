@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 /* What is our game?
  * - It is our version of Duck Hunt
  * - Users can move around, aim, and shoot at targets/
@@ -92,9 +93,9 @@ public class GameManager : MonoBehaviour
     //Methods to handle order of execution for Update / LateUpdate
     private void Update()
     {
+        audioHandler.CustomUpdate();
         ProcessGameTasks();
         _player.CustomUpdate();
-        audioHandler.CustomUpdate();
         GeneralInput();
     }
 
@@ -102,7 +103,7 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.Escape))
         {
-            Application.Quit();
+            SceneManager.LoadScene("Main Menu");
         }
     }
 
@@ -173,7 +174,7 @@ public class GameManager : MonoBehaviour
             StopCoroutine(SpawnEnemyCoroutine());
             _player.weapon.SetClipSize(0);
             _eManager.DeleteAllEnemies();
-            _hudManager.enemyStatusBar.HideImages();
+            _hudManager.enemyStatusBar.SetGroupActive(false);
             enemyType = EnemyType.None;
             start = false;
             checkRoundStatus = false;
